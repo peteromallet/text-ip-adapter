@@ -16,6 +16,44 @@ from ..eval.samples import build_default_probes, load_probes, run_sample_probe
 from ..model.adapter_model import AdapterModel
 
 
+def contrastive_kv_loss(prefix_kv: dict, clamp: bool = True) -> torch.Tensor:
+    """Decorrelate projector K/V outputs across the batch.
+
+    For each injected layer, compute the off-diagonal cosine similarity of
+    per-sample K and V (flattened). Penalize high (positive) cosines; ideal
+    is orthogonal or negative. Targets the experiment-003-diagnosed failure
+    mode where the projector produces near-identical K/V regardless of the
+    reference.
+    """
+    device = None
+    total = torch.tensor(0.0)
+    n_layers = 0
+    for _layer_idx, (K, V) in prefix_kv.items():
+        B = K.shape[0]
+        if B < 2:
+            continue
+        if device is None:
+            device = K.device
+            total = total.to(device)
+        k_flat = K.reshape(B, -1).float()
+        v_flat = V.reshape(B, -1).float()
+        k_norm = torch.nn.functional.normalize(k_flat, dim=-1)
+        v_norm = torch.nn.functional.normalize(v_flat, dim=-1)
+        k_cos = k_norm @ k_norm.t()
+        v_cos = v_norm @ v_norm.t()
+        mask = ~torch.eye(B, dtype=torch.bool, device=device)
+        k_off = k_cos[mask]
+        v_off = v_cos[mask]
+        if clamp:
+            k_off = k_off.clamp(min=0.0)
+            v_off = v_off.clamp(min=0.0)
+        total = total + 0.5 * (k_off.mean() + v_off.mean())
+        n_layers += 1
+    if n_layers == 0:
+        return torch.tensor(0.0, device=device or "cpu")
+    return total / n_layers
+
+
 def _build_optimizer(model: AdapterModel, cfg: ExperimentConfig) -> torch.optim.Optimizer:
     # Projector vs encoder+queries: distinct LRs.
     projector_params = list(model.projector.parameters())
@@ -113,14 +151,24 @@ def train(cfg: ExperimentConfig) -> dict:
                 base = cfg.training.lr_projector if i == 0 else cfg.training.lr_encoder
                 g["lr"] = _lr_at(step, base, cfg.training.warmup, cfg.training.max_steps)
             with accelerator.accumulate(model):
-                out = model(
+                contrastive_enabled = cfg.training.contrastive_weight > 0.0
+                forward_kwargs = dict(
                     reference_ids=batch["reference_ids"],
                     reference_mask=batch["reference_mask"],
                     input_ids=batch["input_ids"],
                     attention_mask=batch["attention_mask"],
                     labels=batch["labels"],
                 )
-                loss = out.loss
+                if contrastive_enabled:
+                    out, prefix_kv = model(**forward_kwargs, return_prefix_kv=True)
+                    loss_ntl = out.loss
+                    loss_contrastive = contrastive_kv_loss(prefix_kv, clamp=cfg.training.contrastive_clamp)
+                    loss = loss_ntl + cfg.training.contrastive_weight * loss_contrastive
+                else:
+                    out = model(**forward_kwargs)
+                    loss = out.loss
+                    loss_ntl = loss
+                    loss_contrastive = torch.tensor(0.0, device=loss.device)
                 accelerator.backward(loss)
                 if accelerator.sync_gradients:
                     accelerator.clip_grad_norm_(model.parameters(), cfg.training.gradient_clip)
@@ -143,6 +191,9 @@ def train(cfg: ExperimentConfig) -> dict:
                 rec = {
                     "step": step,
                     "loss": float(loss.detach().cpu()),
+                    "loss_ntl": float(loss_ntl.detach().cpu()),
+                    "loss_contrastive": float(loss_contrastive.detach().cpu()),
+                    "contrastive_weight": cfg.training.contrastive_weight,
                     "lr_projector": optimizer.param_groups[0]["lr"],
                     "lr_encoder": optimizer.param_groups[1]["lr"],
                     "proj_norm": proj_norm,

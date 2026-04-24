@@ -66,6 +66,9 @@ class TrainingConfig(BaseModel):
     sample_every: int = 100
     sample_max_new_tokens: int = 120
     probe_path: str = "data/pairs/probes.jsonl"
+    # Contrastive loss on projector K/V outputs (exp 004+).
+    contrastive_weight: float = 0.0  # 0 = disabled; >0 enables contrastive term
+    contrastive_clamp: bool = True  # clamp off-diag cosines at 0 before averaging (penalize positive)
 
 
 class RunPodStageConfig(BaseModel):

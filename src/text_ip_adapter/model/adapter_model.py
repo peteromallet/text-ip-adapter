@@ -92,6 +92,7 @@ class AdapterModel(nn.Module):
         input_ids: torch.Tensor,
         attention_mask: torch.Tensor,
         labels: torch.Tensor | None = None,
+        return_prefix_kv: bool = False,
     ):
         z = self._encode_reference(reference_ids, reference_mask)
         prefix_kv = self.projector(z)
@@ -100,6 +101,8 @@ class AdapterModel(nn.Module):
             out = self.base(input_ids=input_ids, attention_mask=attention_mask, labels=labels, return_dict=True)
         finally:
             set_prefix_kv(self._state, None)
+        if return_prefix_kv:
+            return out, prefix_kv
         return out
 
     @torch.no_grad()
