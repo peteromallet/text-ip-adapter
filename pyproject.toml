@@ -1,0 +1,43 @@
+[build-system]
+requires = ["hatchling>=1.20"]
+build-backend = "hatchling.build"
+
+[project]
+name = "text-ip-adapter"
+version = "0.1.0"
+description = "Reference-conditioned text generation experiments with RunPod training support."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "torch>=2.3",
+  "transformers>=4.50",
+  "accelerate>=0.34",
+  "datasets>=2.20",
+  "sentencepiece",
+  "wandb",
+  "ftfy",
+  "tqdm",
+  "numpy",
+  "pydantic>=2.6",
+  "PyYAML>=6.0",
+  "python-dotenv>=1.0.0",
+  "requests>=2.31",
+  "beautifulsoup4>=4.12",
+  "lxml>=4.9",
+  "anthropic>=0.39",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8",
+]
+infra = [
+  "runpod-lifecycle @ file:../runpod-lifecycle",
+  "paramiko>=3.4",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/text_ip_adapter"]

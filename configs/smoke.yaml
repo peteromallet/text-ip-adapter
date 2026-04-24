@@ -1,0 +1,42 @@
+model:
+  base_model_id: google/gemma-3-4b-pt
+  torch_dtype: bfloat16
+
+adapter:
+  num_prefix_tokens: 16
+  num_queries: 16
+  encoder:
+    num_queries: 16
+    perceiver_layers: 2
+    perceiver_heads: 8
+  projector:
+    hidden_mult: 2
+  injection:
+    inject_layers_start: 17
+    inject_layers_end: 32
+
+data:
+  train_path: data/pairs/train.jsonl
+  val_path: data/pairs/val.jsonl
+  test_path: data/pairs/test.jsonl
+  reference_max: 128
+  instruction_max: 64
+  target_max: 64
+
+training:
+  output_dir: checkpoints/smoke
+  batch_size: 1
+  max_steps: 10
+  lr_projector: 1.0e-4
+  lr_encoder: 5.0e-5
+  warmup: 2
+  save_every: 50
+  log_every: 1
+  mixed_precision: "no"
+  sample_every: 5
+  sample_max_new_tokens: 40
+  probe_path: data/pairs/probes.jsonl
+
+runpod:
+  storage_name: Peter
+  remote_root: /workspace/text-ip-adapter
