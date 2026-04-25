@@ -19,6 +19,7 @@ class EncoderConfig(BaseModel):
 
 class ProjectorConfig(BaseModel):
     hidden_mult: int = 2
+    use_trunk: bool = True  # exp 006: set False to drop shared MLP trunk; per-layer heads read z directly
 
 
 class InjectionConfig(BaseModel):

@@ -63,6 +63,7 @@ class AdapterModel(nn.Module):
             num_prefix_tokens=cfg.adapter.num_prefix_tokens,
             inject_layer_indices=inject_layers,
             hidden_mult=cfg.adapter.projector.hidden_mult,
+            use_trunk=cfg.adapter.projector.use_trunk,
         )
         model = cls(base, encoder, projector, inject_layers)
         return model, tokenizer
