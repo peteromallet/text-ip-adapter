@@ -12,7 +12,7 @@ from pathlib import Path
 from runpod_lifecycle import Pod
 
 PROJECT_SYNC_INCLUDE = ("pyproject.toml", "README.md", "env.example", "src", "scripts", "configs")
-PROJECT_SYNC_EXCLUDE = (".venv", "__pycache__", "wandb", "checkpoints", "data/raw", "data/processed", ".git", "eval_reports")
+PROJECT_SYNC_EXCLUDE = (".venv", "__pycache__", "wandb", "checkpoints", ".git", "eval_reports")
 
 
 def _tree_hash(root: Path) -> str:
@@ -50,6 +50,8 @@ def _copy_project_subset(repo_root: Path) -> Path:
         else:
             dst.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(src, dst)
+    shutil.rmtree(temp_root / "data" / "raw", ignore_errors=True)
+    shutil.rmtree(temp_root / "data" / "processed", ignore_errors=True)
     return temp_root
 
 
@@ -135,6 +137,7 @@ async def download_path(pod: Pod, remote_path: str, local_dir: str) -> None:
     await _download_archive(pod, remote_archive, local_archive)
     with tarfile.open(local_archive, "r:gz") as tar:
         tar.extractall(local_root)
+    local_archive.unlink(missing_ok=True)
 
 
 async def tail_remote_log(pod: Pod, remote_log_path: str, stop_event: asyncio.Event, interval_seconds: int = 5) -> None:

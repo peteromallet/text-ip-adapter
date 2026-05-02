@@ -1,0 +1,10 @@
+# Evaluation decoding profile selected by experiment 015.
+#
+# Use with scripts/eval_from_checkpoint.py:
+#   --do-sample --temperature 0.8 --top-p 0.9
+#   --repetition-penalty 1.12 --no-repeat-ngram-size 3
+do_sample: true
+temperature: 0.8
+top_p: 0.9
+repetition_penalty: 1.12
+no_repeat_ngram_size: 3

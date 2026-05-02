@@ -1,0 +1,35 @@
+{
+  "counts": {
+    "('probes_balanced_n16', 'delete', 'source_artifact')": 1,
+    "('probes_balanced_n16', 'keep', 'clean')": 15,
+    "('test', 'delete', 'duplicate')": 17,
+    "('test', 'delete', 'source_artifact')": 2,
+    "('test', 'edit', 'heading_or_wrapper')": 1,
+    "('test', 'keep', 'clean')": 338,
+    "('train', 'delete', 'bad_chunk')": 1,
+    "('train', 'delete', 'duplicate')": 428,
+    "('train', 'delete', 'heading_or_wrapper')": 11,
+    "('train', 'delete', 'prose_drift')": 49,
+    "('train', 'delete', 'source_artifact')": 14,
+    "('train', 'edit', 'heading_or_wrapper')": 2,
+    "('train', 'edit', 'source_artifact')": 79,
+    "('train', 'keep', 'clean')": 1185,
+    "('train', 'keep', 'uncertain_keep')": 2,
+    "('val', 'delete', 'bad_chunk')": 8,
+    "('val', 'delete', 'source_artifact')": 22,
+    "('val', 'edit', 'heading_or_wrapper')": 1,
+    "('val', 'keep', 'clean')": 347
+  },
+  "deleted_rows": 553,
+  "edited_rows": 83,
+  "missing_count": 0,
+  "output": "text-ip-adapter/data/pairs_v4_4_poetry_manual",
+  "probes": 15,
+  "review_count": 2523,
+  "rows": {
+    "test": 339,
+    "train": 1268,
+    "val": 348
+  },
+  "source": "text-ip-adapter/data/pairs_v4_3_poetry_strict"
+}

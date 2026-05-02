@@ -1,0 +1,52 @@
+# Experiment 039 candidate: Gemma 3 4B pretrained with completion-style visible reference scaffold.
+model:
+  base_model_id: google/gemma-3-4b-pt
+  torch_dtype: bfloat16
+
+adapter:
+  num_prefix_tokens: 16
+  num_queries: 16
+  encoder:
+    num_queries: 16
+    perceiver_layers: 2
+    perceiver_heads: 8
+  projector:
+    hidden_mult: 2
+    use_trunk: false
+  injection:
+    inject_layers_start: 17
+    inject_layers_end: 32
+
+data:
+  train_path: data/pairs_v5_10_poetry_llm_style_medium_strong/train.jsonl
+  val_path: data/pairs_v5_10_poetry_llm_style_medium_strong/val.jsonl
+  test_path: data/pairs_v5_10_poetry_llm_style_medium_strong/test.jsonl
+  reference_max: 512
+  prompt_format: paired_completion
+  prompt_reference_max: 320
+  instruction_max: 64
+  target_max: 512
+
+training:
+  output_dir: /tmp/stage1_gemma3_4b_pt_poetry_v5_10_paired_completion_2000
+  batch_size: 1
+  max_steps: 2000
+  lr_projector: 1.0e-5
+  lr_encoder: 5.0e-6
+  warmup: 100
+  min_lr_ratio: 0.10
+  save_every: 400
+  log_every: 25
+  mixed_precision: bf16
+  sample_every: 0
+  sample_max_new_tokens: 120
+  probe_path: data/pairs_v5_10_poetry_llm_style_medium_strong/probes_balanced_n24.jsonl
+  contrastive_weight: 0.2
+  contrastive_clamp: true
+  style_triplet_weight: 1.5
+  style_triplet_margin: 0.35
+  init_from: ""
+
+runpod:
+  storage_name: Peter
+  remote_root: /workspace/text-ip-adapter

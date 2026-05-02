@@ -22,6 +22,25 @@ def _tok_instr_with_sep(tokenizer, instruction: str, max_len: int) -> tuple[torc
     return t, m
 
 
+def _tok_paired_completion_prompt(
+    tokenizer,
+    reference_text: str,
+    max_ref_len: int = 384,
+) -> tuple[torch.Tensor, torch.Tensor]:
+    prefix_ids = tokenizer("A piece of writing:\n\n", add_special_tokens=True)["input_ids"]
+    ref_ids = tokenizer(
+        reference_text,
+        max_length=max_ref_len,
+        truncation=True,
+        add_special_tokens=False,
+    )["input_ids"]
+    suffix_ids = tokenizer("\n\nAnother piece by the same writer:\n\n", add_special_tokens=False)["input_ids"]
+    ids = prefix_ids + ref_ids + suffix_ids
+    t = torch.tensor([ids], dtype=torch.long)
+    m = torch.ones_like(t)
+    return t, m
+
+
 def _decode_new(tokenizer, full_ids: torch.Tensor, prompt_len: int) -> str:
     new_ids = full_ids[0, prompt_len:].tolist()
     return tokenizer.decode(new_ids, skip_special_tokens=True)
@@ -121,21 +140,39 @@ def run_sample_probe(
     max_new_tokens: int = 120,
     include_baseline_once: bool = False,
     baseline_done_flag: set[str] | None = None,
+    generation_kwargs: dict[str, Any] | None = None,
+    prompt_format: str = "instruction",
+    prompt_reference_max: int = 384,
 ) -> list[dict]:
-    # Generate 3 adapter variants per probe (adapter, adapter_swap, no_ref) every call.
-    # Generate prompted_baseline once per probe (first call, or when flag not set).
+    # Generate adapter, adapter_swap, no_ref, prompted_baseline, and adapter_prompted.
     # Writes one JSONL line per (step, probe_id, variant).
     model.eval()
     base = getattr(model, "module", model)  # unwrap accelerate
     device = next(base.parameters()).device
     records: list[dict] = []
     baseline_done_flag = baseline_done_flag if baseline_done_flag is not None else set()
+    gen_kwargs = {
+        "max_new_tokens": max_new_tokens,
+        "do_sample": False,
+        "temperature": 1.0,
+        "use_cache": False,
+    }
+    if generation_kwargs:
+        gen_kwargs.update(generation_kwargs)
+    raw_gen_kwargs = dict(gen_kwargs)
     with open(out_path, "a", encoding="utf-8") as f:
         for probe in probes:
             ref_ids, ref_mask = _tok(tokenizer, probe["reference_text"], max_len=512)
             swap_ref_ids, swap_ref_mask = _tok(tokenizer, probe["swap_reference_text"], max_len=512)
             # Use training format so the generator knows where to start producing the target.
-            instr_ids, instr_mask = _tok_instr_with_sep(tokenizer, probe["instruction"], max_len=128)
+            if prompt_format == "paired_completion":
+                instr_ids, instr_mask = _tok_paired_completion_prompt(
+                    tokenizer,
+                    probe["reference_text"],
+                    max_ref_len=prompt_reference_max,
+                )
+            else:
+                instr_ids, instr_mask = _tok_instr_with_sep(tokenizer, probe["instruction"], max_len=128)
             ref_ids, ref_mask = ref_ids.to(device), ref_mask.to(device)
             swap_ref_ids, swap_ref_mask = swap_ref_ids.to(device), swap_ref_mask.to(device)
             instr_ids, instr_mask = instr_ids.to(device), instr_mask.to(device)
@@ -148,10 +185,7 @@ def run_sample_probe(
                 reference_mask=ref_mask,
                 input_ids=instr_ids,
                 attention_mask=instr_mask,
-                max_new_tokens=max_new_tokens,
-                do_sample=False,
-                temperature=1.0,
-                use_cache=False,
+                **gen_kwargs,
             )
             text = _decode_new(tokenizer, gen, prompt_len)
             rec = {"step": step, "probe_id": probe["probe_id"], "variant": "adapter", "author": probe["author"], "text": text}
@@ -163,10 +197,7 @@ def run_sample_probe(
                 reference_mask=swap_ref_mask,
                 input_ids=instr_ids,
                 attention_mask=instr_mask,
-                max_new_tokens=max_new_tokens,
-                do_sample=False,
-                temperature=1.0,
-                use_cache=False,
+                **gen_kwargs,
             )
             text_sw = _decode_new(tokenizer, gen_sw, prompt_len)
             rec = {"step": step, "probe_id": probe["probe_id"], "variant": "adapter_swap", "author": probe["swap_reference_author"], "text": text_sw}
@@ -175,7 +206,7 @@ def run_sample_probe(
             # Variant 3: no reference (random/uniform prefix = base.generate WITHOUT adapter hooks fired).
             # We pass reference_ids but then zero out the projector output. Cheapest: call base directly.
             raw_base = _raw_base(base)
-            gen_nr = raw_base.generate(input_ids=instr_ids, attention_mask=instr_mask, max_new_tokens=max_new_tokens, do_sample=False, use_cache=False)
+            gen_nr = raw_base.generate(input_ids=instr_ids, attention_mask=instr_mask, **raw_gen_kwargs)
             text_nr = _decode_new(tokenizer, gen_nr, prompt_len)
             rec = {"step": step, "probe_id": probe["probe_id"], "variant": "no_ref", "author": "-", "text": text_nr}
             f.write(json.dumps(rec) + "\n"); records.append(rec)
@@ -183,12 +214,30 @@ def run_sample_probe(
             # Variant 4: prompted_baseline (once per probe).
             key = f"prompted::{probe['probe_id']}"
             if key not in baseline_done_flag:
-                prompted = f'Write in the style of the following reference.\n\nReference:\n{probe["reference_text"]}\n\nInstruction:\n{probe["instruction"]}\n\nResponse:\n'
-                p_ids, p_mask = _tok(tokenizer, prompted, max_len=1024)
+                if prompt_format == "paired_completion":
+                    prompted = (
+                        f'A piece of writing:\n\n{probe["reference_text"]}'
+                        "\n\nAnother piece by the same writer:\n\n"
+                    )
+                    p_ids, p_mask = _tok(tokenizer, prompted, max_len=prompt_reference_max + 96)
+                else:
+                    prompted = f'Write in the style of the following reference.\n\nReference:\n{probe["reference_text"]}\n\nInstruction:\n{probe["instruction"]}\n\nResponse:\n'
+                    p_ids, p_mask = _tok(tokenizer, prompted, max_len=1024)
                 p_ids, p_mask = p_ids.to(device), p_mask.to(device)
-                gen_pb = raw_base.generate(input_ids=p_ids, attention_mask=p_mask, max_new_tokens=max_new_tokens, do_sample=False, use_cache=False)
+                gen_pb = raw_base.generate(input_ids=p_ids, attention_mask=p_mask, **raw_gen_kwargs)
                 text_pb = _decode_new(tokenizer, gen_pb, p_ids.shape[1])
                 rec = {"step": "baseline_once", "probe_id": probe["probe_id"], "variant": "prompted_baseline", "author": probe["author"], "text": text_pb}
+                f.write(json.dumps(rec) + "\n"); records.append(rec)
+
+                gen_ap = base.generate(
+                    reference_ids=ref_ids,
+                    reference_mask=ref_mask,
+                    input_ids=p_ids,
+                    attention_mask=p_mask,
+                    **gen_kwargs,
+                )
+                text_ap = _decode_new(tokenizer, gen_ap, p_ids.shape[1])
+                rec = {"step": step, "probe_id": probe["probe_id"], "variant": "adapter_prompted", "author": probe["author"], "text": text_ap}
                 f.write(json.dumps(rec) + "\n"); records.append(rec)
                 baseline_done_flag.add(key)
 

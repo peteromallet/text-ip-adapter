@@ -1,0 +1,47 @@
+# Experiment 021 eval config: repaired core2 data/probes.
+model:
+  base_model_id: google/gemma-3-4b-pt
+  torch_dtype: bfloat16
+
+adapter:
+  num_prefix_tokens: 16
+  num_queries: 16
+  encoder:
+    num_queries: 16
+    perceiver_layers: 2
+    perceiver_heads: 8
+  projector:
+    hidden_mult: 2
+    use_trunk: false
+  injection:
+    inject_layers_start: 17
+    inject_layers_end: 32
+
+data:
+  train_path: data/pairs_v3_7_core2_repaired/train.jsonl
+  val_path: data/pairs_v3_7_core2_repaired/val.jsonl
+  test_path: data/pairs_v3_7_core2_repaired/test.jsonl
+  reference_max: 512
+  instruction_max: 64
+  target_max: 512
+
+training:
+  output_dir: checkpoints/stage1_v3_7_core2_repaired_eval
+  batch_size: 2
+  max_steps: 1000
+  lr_projector: 1.0e-5
+  lr_encoder: 5.0e-6
+  warmup: 50
+  save_every: 500
+  log_every: 25
+  mixed_precision: bf16
+  sample_every: 500
+  sample_max_new_tokens: 120
+  probe_path: data/pairs_v3_7_core2_repaired/probes_balanced_n20.jsonl
+  contrastive_weight: 0.1
+  contrastive_clamp: true
+  init_from: checkpoints/stage1_v3_5_artifact_clean_core3_longer/step_1000.pt
+
+runpod:
+  storage_name: Peter
+  remote_root: /workspace/text-ip-adapter

@@ -1,0 +1,49 @@
+# Experiment 024c candidate: restart from clean 006 no-trunk on v4 style-clean data.
+model:
+  base_model_id: google/gemma-3-4b-pt
+  torch_dtype: bfloat16
+
+adapter:
+  num_prefix_tokens: 16
+  num_queries: 16
+  encoder:
+    num_queries: 16
+    perceiver_layers: 2
+    perceiver_heads: 8
+  projector:
+    hidden_mult: 2
+    use_trunk: false
+  injection:
+    inject_layers_start: 17
+    inject_layers_end: 32
+
+data:
+  train_path: data/pairs_v4_core2_styleclean/train.jsonl
+  val_path: data/pairs_v4_core2_styleclean/val.jsonl
+  test_path: data/pairs_v4_core2_styleclean/test.jsonl
+  reference_max: 512
+  instruction_max: 64
+  target_max: 512
+
+training:
+  output_dir: /tmp/stage1_v4_styleclean_triplet_restart006
+  batch_size: 2
+  max_steps: 1000
+  lr_projector: 1.0e-5
+  lr_encoder: 5.0e-6
+  warmup: 50
+  save_every: 500
+  log_every: 25
+  mixed_precision: bf16
+  sample_every: 0
+  sample_max_new_tokens: 120
+  probe_path: data/pairs_v4_core2_styleclean/probes_balanced.jsonl
+  contrastive_weight: 0.1
+  contrastive_clamp: true
+  style_triplet_weight: 0.5
+  style_triplet_margin: 0.3
+  init_from: checkpoints/stage1_gemma_no_trunk/final.pt
+
+runpod:
+  storage_name: Peter
+  remote_root: /workspace/text-ip-adapter

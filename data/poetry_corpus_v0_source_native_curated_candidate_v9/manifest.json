@@ -1,0 +1,360 @@
+{
+  "authors": 79,
+  "authors_ge_25": 79,
+  "curation": "prompt-adapters/projects/poetry-clean-corpus/author_source_curation_v0.json",
+  "input_corpus": "text-ip-adapter/data/poetry_corpus_v0_source_native_accepted_candidate/corpus.jsonl",
+  "low_authors_under_25": {},
+  "merge_counts": {
+    "brooke_rupert_1887_1915->rupert_brooke": 50,
+    "browning_elizabeth_barrett_1806_1861->elizabeth_barrett_browning": 1026,
+    "chesterton_g_k->g_k_chesterton": 147,
+    "chesterton_g_k_1874_1936->g_k_chesterton": 499,
+    "christina_rossetti->christina_rossetti": 404,
+    "dante_rossetti->dante_gabriel_rossetti": 99,
+    "elizabeth_browning->elizabeth_barrett_browning": 45,
+    "masefield_john_1878_1967->john_masefield": 118,
+    "rossetti_christina_georgina_1830_1894->christina_rossetti": 180,
+    "rupert_brooke->rupert_brooke": 153,
+    "tennyson_alfred_tennyson_baron_1809_1892->alfred_tennyson": 592,
+    "wordsworth_william_1770_1850->william_wordsworth": 390
+  },
+  "reason_counts": {
+    "audit_classroom_prompt": 208,
+    "audit_editorial": 1,
+    "audit_ocr_noise": 136,
+    "audit_placeholder": 1,
+    "reject_author_id": 7246,
+    "reject_row_title_regex": 542,
+    "reject_source_id": 17758,
+    "reject_source_title_regex": 3176,
+    "reject_text_regex": 9761
+  },
+  "rows_in": 51634,
+  "rows_kept": 24614,
+  "rows_rejected": 27020,
+  "sources": 97,
+  "top_author_counts": [
+    [
+      "henry_longfellow",
+      1735
+    ],
+    [
+      "elizabeth_barrett_browning",
+      1071
+    ],
+    [
+      "walt_whitman",
+      977
+    ],
+    [
+      "alfred_tennyson",
+      957
+    ],
+    [
+      "gordon_adam_lindsay_1833_1870",
+      705
+    ],
+    [
+      "dante_gabriel_rossetti",
+      664
+    ],
+    [
+      "g_k_chesterton",
+      646
+    ],
+    [
+      "prior_matthew",
+      644
+    ],
+    [
+      "charles_churchill",
+      636
+    ],
+    [
+      "caswall_edward_1814_1878",
+      596
+    ],
+    [
+      "lampman_archibald_1861_1899",
+      587
+    ],
+    [
+      "christina_rossetti",
+      584
+    ],
+    [
+      "joaquin_miller",
+      568
+    ],
+    [
+      "fisher_benjamin_franklin_1873_1916",
+      553
+    ],
+    [
+      "matthew_arnold",
+      543
+    ],
+    [
+      "amy_lowell",
+      517
+    ],
+    [
+      "algernon_swinburne",
+      480
+    ],
+    [
+      "fitzgerald_marcella_agnes_1845",
+      475
+    ],
+    [
+      "william_wordsworth",
+      460
+    ],
+    [
+      "newman_john_henry_1801_1890",
+      459
+    ],
+    [
+      "john_masefield",
+      436
+    ],
+    [
+      "oscar_wilde",
+      433
+    ],
+    [
+      "skidmore_harriet_m_1837_1904",
+      424
+    ],
+    [
+      "john_cunningham",
+      414
+    ],
+    [
+      "emily_dickinson",
+      408
+    ],
+    [
+      "maynard_theodore",
+      372
+    ],
+    [
+      "percy_bysshe_shelley",
+      369
+    ],
+    [
+      "william_shakespeare",
+      340
+    ],
+    [
+      "de_vere_aubrey_1814_1902",
+      337
+    ],
+    [
+      "will_carleton",
+      332
+    ],
+    [
+      "nichols_robert_malise_bowyer_1893_1944",
+      320
+    ],
+    [
+      "letitia_elizabeth_landon",
+      297
+    ],
+    [
+      "robert_browning",
+      257
+    ],
+    [
+      "john_clare",
+      243
+    ],
+    [
+      "ruskin_john_1819_1900",
+      241
+    ],
+    [
+      "leo_xiii_pope_1810_1903",
+      231
+    ],
+    [
+      "buchanan_robert",
+      225
+    ],
+    [
+      "thomas_campbell",
+      215
+    ],
+    [
+      "field_eugene",
+      210
+    ],
+    [
+      "rupert_brooke",
+      203
+    ]
+  ],
+  "top_source_counts": [
+    [
+      "gutenberg_1365",
+      1735
+    ],
+    [
+      "internet_archive_ebbrowningpoemsnewed02",
+      1026
+    ],
+    [
+      "gutenberg_1322",
+      977
+    ],
+    [
+      "internet_archive_b2256713",
+      705
+    ],
+    [
+      "internet_archive_priorpoems",
+      644
+    ],
+    [
+      "internet_archive_poems_by_charles_churchill",
+      636
+    ],
+    [
+      "internet_archive_lyrics-of-earth",
+      587
+    ],
+    [
+      "internet_archive_songs_of_the_sierras",
+      568
+    ],
+    [
+      "internet_archive_rossettipoems2ed",
+      565
+    ],
+    [
+      "internet_archive_poems00fishmiss",
+      553
+    ],
+    [
+      "gutenberg_54985",
+      543
+    ],
+    [
+      "gutenberg_35402",
+      480
+    ],
+    [
+      "internet_archive_Poems1886",
+      475
+    ],
+    [
+      "internet_archive_VersesOnVariousOccasions",
+      459
+    ],
+    [
+      "internet_archive_TheMasqueOfMaryAnd",
+      444
+    ],
+    [
+      "gutenberg_1057",
+      433
+    ],
+    [
+      "internet_archive_BesideTheWesternSea",
+      424
+    ],
+    [
+      "internet_archive_cunninghampoems",
+      414
+    ],
+    [
+      "gutenberg_12242",
+      408
+    ],
+    [
+      "gutenberg_19188",
+      404
+    ],
+    [
+      "internet_archive_YarrowRevisited",
+      390
+    ],
+    [
+      "internet_archive_poems00maynuoft",
+      372
+    ],
+    [
+      "internet_archive_bub_gb_DNwGAAAAQAAJ",
+      369
+    ],
+    [
+      "internet_archive_shakespearesonnets",
+      340
+    ],
+    [
+      "internet_archive_Poems1855",
+      337
+    ],
+    [
+      "internet_archive_poems-by-will-m-carleton",
+      332
+    ],
+    [
+      "internet_archive_ardoursandendura00nichmiss",
+      320
+    ],
+    [
+      "gutenberg_40717",
+      318
+    ],
+    [
+      "internet_archive_bub_gb_JncEAAAAQAAJ",
+      297
+    ],
+    [
+      "internet_archive_poems191500chesuoft",
+      285
+    ],
+    [
+      "gutenberg_841",
+      259
+    ],
+    [
+      "gutenberg_1020",
+      258
+    ],
+    [
+      "gutenberg_16376",
+      257
+    ],
+    [
+      "internet_archive_clarevillageminstrel02",
+      243
+    ],
+    [
+      "internet_archive_poems00ruskuoft",
+      241
+    ],
+    [
+      "internet_archive_PoemsCharadesInscriptionsOfPopeLeoXIII",
+      231
+    ],
+    [
+      "internet_archive_NorthCoastAndOtherPoems",
+      225
+    ],
+    [
+      "internet_archive_bub_gb_JCd6p41jH-oC",
+      215
+    ],
+    [
+      "internet_archive_poems00chesuoft",
+      214
+    ],
+    [
+      "internet_archive_tennysonpoems1842-02",
+      213
+    ]
+  ]
+}

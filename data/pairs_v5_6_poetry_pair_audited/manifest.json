@@ -1,0 +1,137 @@
+{
+  "description": "v5.4 pair set with train split audited by 10 worker shards for quality, artifacts, and stylistic incoherence; val/test/probes carried over unchanged from v5.4.",
+  "merge_summary": {
+    "decision_counts": {
+      "delete": 685,
+      "edit": 68,
+      "keep": 3106
+    },
+    "decision_files": [
+      "prompt-adapters/projects/poetry-clean-corpus/pair_audit_v1/decisions/decisions_shard_00.jsonl",
+      "prompt-adapters/projects/poetry-clean-corpus/pair_audit_v1/decisions/decisions_shard_01.jsonl",
+      "prompt-adapters/projects/poetry-clean-corpus/pair_audit_v1/decisions/decisions_shard_02.jsonl",
+      "prompt-adapters/projects/poetry-clean-corpus/pair_audit_v1/decisions/decisions_shard_03.jsonl",
+      "prompt-adapters/projects/poetry-clean-corpus/pair_audit_v1/decisions/decisions_shard_04.jsonl",
+      "prompt-adapters/projects/poetry-clean-corpus/pair_audit_v1/decisions/decisions_shard_05.jsonl",
+      "prompt-adapters/projects/poetry-clean-corpus/pair_audit_v1/decisions/decisions_shard_06.jsonl",
+      "prompt-adapters/projects/poetry-clean-corpus/pair_audit_v1/decisions/decisions_shard_07.jsonl",
+      "prompt-adapters/projects/poetry-clean-corpus/pair_audit_v1/decisions/decisions_shard_08.jsonl",
+      "prompt-adapters/projects/poetry-clean-corpus/pair_audit_v1/decisions/decisions_shard_09.jsonl"
+    ],
+    "decision_rows": 3859,
+    "decisions_dir": "prompt-adapters/projects/poetry-clean-corpus/pair_audit_v1/decisions",
+    "errors": [],
+    "output_rows": 3174,
+    "reason_counts": {
+      "drama_or_dialogue": 70,
+      "foreign_language": 2,
+      "metadata": 165,
+      "non_poetry": 2,
+      "ocr": 471,
+      "prose": 132,
+      "style_mismatch": 37
+    },
+    "severity_counts": {
+      "major": 684,
+      "minor": 69,
+      "none": 3106
+    },
+    "source_rows": 3859,
+    "source_train": "text-ip-adapter/data/pairs_v5_4_poetry_corpus_probe_artifact_clean/train.jsonl",
+    "valid": true
+  },
+  "pair_audit": "prompt-adapters/projects/poetry-clean-corpus/pair_audit_v1",
+  "source_pair_set": "text-ip-adapter/data/pairs_v5_4_poetry_corpus_probe_artifact_clean",
+  "splits": {
+    "probes_balanced": {
+      "rows": 12,
+      "sha256": "173621c0e7458c2ac67f4b5de1f2812084dd7115dec768f3e35eaeb83df513d8"
+    },
+    "probes_balanced_n24": {
+      "rows": 12,
+      "sha256": "173621c0e7458c2ac67f4b5de1f2812084dd7115dec768f3e35eaeb83df513d8"
+    },
+    "test": {
+      "author_counts": {
+        "buchanan_robert": 24,
+        "john_masefield": 24,
+        "kemp_harry_1883_1960": 24,
+        "stephen_crane": 24,
+        "stothert_james_a": 24,
+        "william_wordsworth": 24
+      },
+      "authors": 6,
+      "rows": 144,
+      "sha256": "08f69d8da068ff6a945a41de95129fcfff85dc6caa7f2bbccdeb74e73826a027"
+    },
+    "train": {
+      "author_counts": {
+        "alfred_tennyson": 65,
+        "algernon_swinburne": 78,
+        "amy_lowell": 78,
+        "bowen_maria": 59,
+        "brian_hooker": 72,
+        "caswall_edward_1814_1878": 72,
+        "christina_rossetti": 74,
+        "craig_frank_h": 80,
+        "dante_gabriel_rossetti": 80,
+        "davidson_gustav_1895_1971": 30,
+        "dix_w_chatterton": 76,
+        "donahoe_daniel_joseph_1853_1930": 80,
+        "edna_millay": 78,
+        "edwin_arlington_robinson": 69,
+        "elizabeth_barrett_browning": 80,
+        "ellen_russell_emerson": 80,
+        "ernest_charles_jones": 76,
+        "field_eugene": 51,
+        "firkins_chester": 75,
+        "fitzgerald_marcella_agnes_1845": 78,
+        "forrest_m_1872_1935": 76,
+        "gaffney_francis_a": 78,
+        "glyndon_howard_1840_1923": 68,
+        "henry_longfellow": 46,
+        "joaquin_miller": 80,
+        "john_clare": 80,
+        "l_a_czarnecki": 67,
+        "lampman_archibald_1861_1899": 68,
+        "little_david_flemming": 33,
+        "lucas_daniel_bedinger_1836_1909": 74,
+        "matthew_arnold": 78,
+        "nichols_robert_malise_bowyer_1893_1944": 74,
+        "o_hagan_thomas_1855_1939": 29,
+        "oscar_wilde": 80,
+        "percy_bysshe_shelley": 66,
+        "rudyard_kipling": 30,
+        "rupert_brooke": 55,
+        "ruskin_john_1819_1900": 80,
+        "sara_teasdale": 72,
+        "sephen_pell": 55,
+        "sheehan_patrick_augustine_1852_1913": 75,
+        "skidmore_harriet_m_1837_1904": 48,
+        "stewart_john_of_baldynneis": 32,
+        "t_s_eliot": 22,
+        "w_a_n": 17,
+        "walt_whitman": 80,
+        "will_carleton": 80,
+        "william_blake": 30,
+        "william_butler_yeats": 70
+      },
+      "authors": 49,
+      "rows": 3174,
+      "sha256": "87ba33fe56204b848d50e663c91112e2feab307709f321db6d5cea22ca13ea78"
+    },
+    "val": {
+      "author_counts": {
+        "cushag": 24,
+        "emily_dickinson": 24,
+        "john_keats": 24,
+        "newman_john_henry_1801_1890": 24,
+        "robert_frost": 24,
+        "thomas_hardy": 24
+      },
+      "authors": 6,
+      "rows": 144,
+      "sha256": "010fde35f6f907054c369dfeec75282c313739e6a4e98fa8de914ba6d6ea1230"
+    }
+  }
+}

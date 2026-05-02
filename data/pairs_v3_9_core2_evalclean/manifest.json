@@ -1,0 +1,25 @@
+{
+  "corpus_version": "v3.9_core2_evalclean",
+  "derived_from": "data/pairs_v3_8_core2_cleanheldout",
+  "change": "train/val/test unchanged; balanced probes rebuilt with clean heldout target/ref chunks as references",
+  "audit": {
+    "rows": 32,
+    "by_register": {
+      "poetry": 16,
+      "screenplay": 16
+    },
+    "authors_by_register": {
+      "poetry": 8,
+      "screenplay": 8
+    },
+    "unique_refs_by_register": {
+      "poetry": 16,
+      "screenplay": 15
+    },
+    "dirty_refs": 0,
+    "source_fields": {
+      "target_text": 32
+    }
+  },
+  "sha256_core": "18419f2fbd299c6be63785807482415f0a36a3e60d9845b8dab2bcabea2df17d"
+}

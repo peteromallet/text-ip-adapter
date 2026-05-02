@@ -1,0 +1,49 @@
+# Experiment 008: v2 warmstart minfix.
+# Warmstart from 006, keep big-context target length, and restore active
+# contrastive pressure with batch_size >= 2 on curated v2 splits.
+model:
+  base_model_id: google/gemma-3-4b-pt
+  torch_dtype: bfloat16
+
+adapter:
+  num_prefix_tokens: 16
+  num_queries: 16
+  encoder:
+    num_queries: 16
+    perceiver_layers: 2
+    perceiver_heads: 8
+  projector:
+    hidden_mult: 2
+    use_trunk: false
+  injection:
+    inject_layers_start: 17
+    inject_layers_end: 32
+
+data:
+  train_path: data/pairs_v2/train.v2_curated.jsonl
+  val_path: data/pairs_v2/val.v2_curated.jsonl
+  test_path: data/pairs_v2/test.v2_curated.jsonl
+  reference_max: 512
+  instruction_max: 128
+  target_max: 1024
+
+training:
+  output_dir: checkpoints/stage1_v2_warmstart_minfix
+  batch_size: 2
+  max_steps: 5000
+  lr_projector: 5.0e-5
+  lr_encoder: 2.5e-5
+  warmup: 200
+  save_every: 1000
+  log_every: 25
+  mixed_precision: bf16
+  sample_every: 500
+  sample_max_new_tokens: 200
+  probe_path: data/pairs/probes.llm.jsonl
+  contrastive_weight: 0.1
+  contrastive_clamp: true
+  init_from: checkpoints/stage1_gemma_no_trunk/final.pt
+
+runpod:
+  storage_name: Peter
+  remote_root: /workspace/text-ip-adapter

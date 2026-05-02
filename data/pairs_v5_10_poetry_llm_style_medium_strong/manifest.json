@@ -1,0 +1,32 @@
+{
+  "description": "v5.7 pair-audited split filtered by LLM style audit v2 for clean medium/strong distinctive writing style.",
+  "source_pair_set": "/Users/peteromalley/Documents/reigh-workspace/text-ip-adapter/data/pairs_v5_7_poetry_pair_audited_min25",
+  "splits": {
+    "probes_balanced": {
+      "authors": 12,
+      "rows": 12,
+      "sha256": "173621c0e7458c2ac67f4b5de1f2812084dd7115dec768f3e35eaeb83df513d8"
+    },
+    "probes_balanced_n24": {
+      "authors": 12,
+      "rows": 12,
+      "sha256": "173621c0e7458c2ac67f4b5de1f2812084dd7115dec768f3e35eaeb83df513d8"
+    },
+    "test": {
+      "authors": 6,
+      "rows": 144,
+      "sha256": "08f69d8da068ff6a945a41de95129fcfff85dc6caa7f2bbccdeb74e73826a027"
+    },
+    "train": {
+      "authors": 44,
+      "rows": 2868,
+      "sha256": "70a4372b262ffc5a8304870325ed7a2a21cb6d917a988a82acde7043a2aedfcd"
+    },
+    "val": {
+      "authors": 6,
+      "rows": 144,
+      "sha256": "010fde35f6f907054c369dfeec75282c313739e6a4e98fa8de914ba6d6ea1230"
+    }
+  },
+  "style_audit": "/Users/peteromalley/Documents/reigh-workspace/prompt-adapters/projects/poetry-clean-corpus/pair_style_audit_v2"
+}

@@ -1,0 +1,190 @@
+{
+  "caps": {
+    "dedupe_targets": true,
+    "heldout_ref_cap": 30,
+    "train_author_cap": 60,
+    "train_ref_cap": 40
+  },
+  "description": "manual-clean poetry data with target dedupe, repeated-reference caps, and rebuilt balanced probes",
+  "output": "data/pairs_v4_5_poetry_structural_balanced",
+  "probes_balanced.jsonl": {
+    "authors": {
+      "christina_rossetti": 2,
+      "edna_millay": 2,
+      "edwin_arlington_robinson": 2,
+      "emily_dickinson": 2,
+      "john_masefield": 2,
+      "matthew_arnold": 2,
+      "sara_teasdale": 2,
+      "stephen_crane": 2
+    },
+    "rows": 16,
+    "sha256": "d79d372c6db452c6c12f9b7a325590f287b17bde534738c3514dbfeee7b930ea",
+    "swap_authors": {
+      "christina_rossetti": 2,
+      "edna_millay": 2,
+      "edwin_arlington_robinson": 2,
+      "emily_dickinson": 2,
+      "john_masefield": 2,
+      "matthew_arnold": 2,
+      "sara_teasdale": 2,
+      "stephen_crane": 2
+    }
+  },
+  "probes_balanced_n16.jsonl": {
+    "authors": {
+      "christina_rossetti": 2,
+      "edna_millay": 2,
+      "edwin_arlington_robinson": 2,
+      "emily_dickinson": 2,
+      "john_masefield": 2,
+      "matthew_arnold": 2,
+      "sara_teasdale": 2,
+      "stephen_crane": 2
+    },
+    "rows": 16,
+    "sha256": "d79d372c6db452c6c12f9b7a325590f287b17bde534738c3514dbfeee7b930ea",
+    "swap_authors": {
+      "christina_rossetti": 2,
+      "edna_millay": 2,
+      "edwin_arlington_robinson": 2,
+      "emily_dickinson": 2,
+      "john_masefield": 2,
+      "matthew_arnold": 2,
+      "sara_teasdale": 2,
+      "stephen_crane": 2
+    }
+  },
+  "source": "data/pairs_v4_4_poetry_manual",
+  "splits": {
+    "test": {
+      "authors": {
+        "christina_rossetti": 30,
+        "emily_dickinson": 30,
+        "sara_teasdale": 31,
+        "stephen_crane": 43
+      },
+      "dropped": {
+        "ref_cap": 205
+      },
+      "input_rows": 339,
+      "max_ref_repeat": 30,
+      "output_rows": 134,
+      "post_stats": {
+        "authors": {
+          "christina_rossetti": 30,
+          "emily_dickinson": 30,
+          "sara_teasdale": 31,
+          "stephen_crane": 43
+        },
+        "max_ref_repeat": 30,
+        "max_target_repeat": 1,
+        "refs_gt_30": 0,
+        "rows": 134,
+        "target_duplicate_groups": 0,
+        "unique_refs": 6,
+        "unique_targets": 134
+      },
+      "sha256": "0eb56f8e9dcb69e2c59d4704fcd7b82cb4d40d02ad171651b8d26fcee893205e",
+      "unique_refs": 6,
+      "unique_targets": 134
+    },
+    "train": {
+      "authors": {
+        "algernon_swinburne": 41,
+        "amy_lowell": 40,
+        "dante_rossetti": 40,
+        "edgar_allan_poe": 40,
+        "elizabeth_browning": 44,
+        "gerard_manley_hopkins": 41,
+        "henry_longfellow": 40,
+        "john_keats": 25,
+        "oscar_wilde": 60,
+        "robert_frost": 37,
+        "rudyard_kipling": 22,
+        "rupert_brooke": 40,
+        "t_s_eliot": 16,
+        "thomas_hardy": 40,
+        "walt_whitman": 40,
+        "wilfred_owen": 31,
+        "william_blake": 41,
+        "william_butler_yeats": 40,
+        "william_wordsworth": 49
+      },
+      "dropped": {
+        "author_cap": 14,
+        "ref_cap": 418,
+        "target_duplicate": 109
+      },
+      "input_rows": 1268,
+      "max_ref_repeat": 40,
+      "output_rows": 727,
+      "post_stats": {
+        "authors": {
+          "algernon_swinburne": 41,
+          "amy_lowell": 40,
+          "dante_rossetti": 40,
+          "edgar_allan_poe": 40,
+          "elizabeth_browning": 44,
+          "gerard_manley_hopkins": 41,
+          "henry_longfellow": 40,
+          "john_keats": 25,
+          "oscar_wilde": 60,
+          "robert_frost": 37,
+          "rudyard_kipling": 22,
+          "rupert_brooke": 40,
+          "t_s_eliot": 16,
+          "thomas_hardy": 40,
+          "walt_whitman": 40,
+          "wilfred_owen": 31,
+          "william_blake": 41,
+          "william_butler_yeats": 40,
+          "william_wordsworth": 49
+        },
+        "max_ref_repeat": 40,
+        "max_target_repeat": 1,
+        "refs_gt_30": 13,
+        "rows": 727,
+        "target_duplicate_groups": 0,
+        "unique_refs": 31,
+        "unique_targets": 727
+      },
+      "sha256": "b9c235c4d98f7895b1a887da448200e9abe0924ea37c4901df60e301ab51e230",
+      "unique_refs": 31,
+      "unique_targets": 727
+    },
+    "val": {
+      "authors": {
+        "edna_millay": 60,
+        "edwin_arlington_robinson": 46,
+        "john_masefield": 47,
+        "matthew_arnold": 30
+      },
+      "dropped": {
+        "ref_cap": 97,
+        "target_duplicate": 68
+      },
+      "input_rows": 348,
+      "max_ref_repeat": 30,
+      "output_rows": 183,
+      "post_stats": {
+        "authors": {
+          "edna_millay": 60,
+          "edwin_arlington_robinson": 46,
+          "john_masefield": 47,
+          "matthew_arnold": 30
+        },
+        "max_ref_repeat": 30,
+        "max_target_repeat": 1,
+        "refs_gt_30": 0,
+        "rows": 183,
+        "target_duplicate_groups": 0,
+        "unique_refs": 7,
+        "unique_targets": 183
+      },
+      "sha256": "87898d01ce5e1057450f682840acd35c8431fac073ca08a41f5dbb37d854e0e4",
+      "unique_refs": 7,
+      "unique_targets": 183
+    }
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "corpus_version": "v3.5_artifact_clean_core3",
+  "derived_from": "data/pairs_v3_4_artifact_clean_core3",
+  "cleanup_counts": {
+    "train:poetry:ref_text:poetry_page_number": 266,
+    "train:poetry:target_text:poetry_page_number": 110,
+    "val:poetry:target_text:wrapped_bracket_block": 8,
+    "val:poetry:ref_text:wrapped_bracket_block": 80,
+    "val:poetry:ref_text:poetry_year_fragment": 40,
+    "val:poetry:target_text:poetry_page_number": 42,
+    "val:poetry:target_text:poetry_year_fragment": 2,
+    "probe:poetry:reference_text:wrapped_bracket_block": 6,
+    "probe:poetry:reference_text:poetry_year_fragment": 3,
+    "probe:poetry:swap_reference_text:wrapped_bracket_block": 16,
+    "probe:poetry:swap_reference_text:poetry_year_fragment": 8,
+    "probe:poetry:expected_target:poetry_page_number": 1
+  },
+  "removed": {
+    "train": [
+      {
+        "author": "coolidge",
+        "register": "speech",
+        "ref_doc_id": "coolidge_338c253fa1d1",
+        "target_doc_id": "coolidge_e05f0a6b2edc",
+        "reasons": [
+          "target_text:the world and its people"
+        ]
+      },
+      {
+        "author": "coolidge",
+        "register": "speech",
+        "ref_doc_id": "coolidge_4e893a669f2c",
+        "target_doc_id": "coolidge_e05f0a6b2edc",
+        "reasons": [
+          "target_text:the world and its people"
+        ]
+      }
+    ],
+    "val": [
+      {
+        "author": "sara_teasdale",
+        "register": "poetry",
+        "ref_doc_id": "sara_teasdale_35067f57977f",
+        "target_doc_id": "sara_teasdale_787e90d2b3e3",
+        "reasons": [
+          "target_text:this etext has been transcribed"
+        ]
+      }
+    ]
+  },
+  "removed_counts": {
+    "train": 2,
+    "val": 1
+  },
+  "audit": {
+    "splits": {
+      "train": {
+        "rows": 8817,
+        "by_register": {
+          "poetry": 2265,
+          "screenplay": 5635,
+          "speech": 917
+        },
+        "authors_by_register": {
+          "poetry": 23,
+          "screenplay": 191,
+          "speech": 24
+        }
+      },
+      "val": {
+        "rows": 282,
+        "by_register": {
+          "poetry": 182,
+          "screenplay": 50,
+          "speech": 50
+        },
+        "authors_by_register": {
+          "poetry": 2,
+          "screenplay": 2,
+          "speech": 2
+        }
+      },
+      "test": {
+        "rows": 247,
+        "by_register": {
+          "poetry": 147,
+          "screenplay": 50,
+          "speech": 50
+        },
+        "authors_by_register": {
+          "poetry": 2,
+          "screenplay": 2,
+          "speech": 2
+        }
+      }
+    },
+    "author_disjoint": {
+      "train_val": true,
+      "train_test": true,
+      "val_test": true
+    }
+  },
+  "sha256_core": "a380657000c6d38a680d26e0378f9f35ac83181eb4b40591f9fe64c87fd5d4fa"
+}

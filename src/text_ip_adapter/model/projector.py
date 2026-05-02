@@ -16,16 +16,15 @@ class PrefixProjector(nn.Module):
         head_dim: int,
         num_prefix_tokens: int,
         inject_layer_indices: list[int],
+        layer_kv_specs: dict[int, tuple[int, int]] | None = None,
         hidden_mult: int = 2,
         use_trunk: bool = True,
     ) -> None:
         super().__init__()
-        self.num_kv_heads = num_kv_heads
-        self.head_dim = head_dim
         self.num_prefix_tokens = num_prefix_tokens
         self.inject_layer_indices = list(inject_layer_indices)
+        self.layer_kv_specs = layer_kv_specs or {li: (num_kv_heads, head_dim) for li in self.inject_layer_indices}
         self.use_trunk = use_trunk
-        per_token_dim = num_kv_heads * head_dim
         if use_trunk:
             trunk_hidden = hidden_size * hidden_mult
             self.trunk = nn.Sequential(
@@ -44,6 +43,8 @@ class PrefixProjector(nn.Module):
         self.k_norms = nn.ModuleDict() if not use_trunk else None
         self.v_norms = nn.ModuleDict() if not use_trunk else None
         for li in self.inject_layer_indices:
+            layer_num_kv_heads, layer_head_dim = self.layer_kv_specs[li]
+            per_token_dim = layer_num_kv_heads * layer_head_dim
             k = nn.Linear(hidden_size, per_token_dim)
             v = nn.Linear(hidden_size, per_token_dim)
             nn.init.zeros_(k.weight); nn.init.zeros_(k.bias)
@@ -66,7 +67,8 @@ class PrefixProjector(nn.Module):
                 # Per-layer LayerNorm before each head (replaces the shared LayerNorm in the trunk).
                 hk = self.k_norms[str(li)](z)
                 hv = self.v_norms[str(li)](z)
-            k = self.k_heads[str(li)](hk).view(B, P, self.num_kv_heads, self.head_dim)
-            v = self.v_heads[str(li)](hv).view(B, P, self.num_kv_heads, self.head_dim)
+            layer_num_kv_heads, layer_head_dim = self.layer_kv_specs[li]
+            k = self.k_heads[str(li)](hk).view(B, P, layer_num_kv_heads, layer_head_dim)
+            v = self.v_heads[str(li)](hv).view(B, P, layer_num_kv_heads, layer_head_dim)
             out[li] = (k, v)
         return out

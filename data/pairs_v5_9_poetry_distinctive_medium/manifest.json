@@ -1,0 +1,32 @@
+{
+  "description": "v5.7 pair-audited train split filtered to medium-length, stylometrically distinctive/coherent poetry pairs.",
+  "distinctive_style_report": "/Users/peteromalley/Documents/reigh-workspace/prompt-adapters/projects/poetry-clean-corpus/distinctive_style_v1",
+  "source_pair_set": "/Users/peteromalley/Documents/reigh-workspace/text-ip-adapter/data/pairs_v5_7_poetry_pair_audited_min25",
+  "splits": {
+    "probes_balanced": {
+      "authors": 12,
+      "rows": 12,
+      "sha256": "173621c0e7458c2ac67f4b5de1f2812084dd7115dec768f3e35eaeb83df513d8"
+    },
+    "probes_balanced_n24": {
+      "authors": 12,
+      "rows": 12,
+      "sha256": "173621c0e7458c2ac67f4b5de1f2812084dd7115dec768f3e35eaeb83df513d8"
+    },
+    "test": {
+      "authors": 6,
+      "rows": 144,
+      "sha256": "08f69d8da068ff6a945a41de95129fcfff85dc6caa7f2bbccdeb74e73826a027"
+    },
+    "train": {
+      "authors": 2,
+      "rows": 55,
+      "sha256": "6db40370f12e1c1c632c6e276d333115015780c94fd30f75eafd5d6e1112a285"
+    },
+    "val": {
+      "authors": 6,
+      "rows": 144,
+      "sha256": "010fde35f6f907054c369dfeec75282c313739e6a4e98fa8de914ba6d6ea1230"
+    }
+  }
+}

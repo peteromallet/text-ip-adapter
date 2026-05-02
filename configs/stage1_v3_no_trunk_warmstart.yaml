@@ -1,0 +1,49 @@
+# Experiment 010: v3 no-trunk warmstart.
+# Uses the repaired v3 corpus from 009: Miller speech author extraction fixed,
+# per-register held-out gates enforced, generic style instructions.
+model:
+  base_model_id: google/gemma-3-4b-pt
+  torch_dtype: bfloat16
+
+adapter:
+  num_prefix_tokens: 16
+  num_queries: 16
+  encoder:
+    num_queries: 16
+    perceiver_layers: 2
+    perceiver_heads: 8
+  projector:
+    hidden_mult: 2
+    use_trunk: false
+  injection:
+    inject_layers_start: 17
+    inject_layers_end: 32
+
+data:
+  train_path: data/pairs_v3_candidate/train.jsonl
+  val_path: data/pairs_v3_candidate/val.jsonl
+  test_path: data/pairs_v3_candidate/test.jsonl
+  reference_max: 512
+  instruction_max: 64
+  target_max: 512
+
+training:
+  output_dir: checkpoints/stage1_v3_no_trunk_warmstart
+  batch_size: 2
+  max_steps: 5000
+  lr_projector: 5.0e-5
+  lr_encoder: 2.5e-5
+  warmup: 150
+  save_every: 1000
+  log_every: 25
+  mixed_precision: bf16
+  sample_every: 1000
+  sample_max_new_tokens: 120
+  probe_path: data/pairs/probes.llm.jsonl
+  contrastive_weight: 0.1
+  contrastive_clamp: true
+  init_from: checkpoints/stage1_gemma_no_trunk/final.pt
+
+runpod:
+  storage_name: Peter
+  remote_root: /workspace/text-ip-adapter

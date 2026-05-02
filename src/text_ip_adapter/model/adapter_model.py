@@ -25,13 +25,48 @@ def _ensure_hf_token() -> None:
 def load_base_model(model_id: str, torch_dtype: str = "bfloat16") -> tuple[nn.Module, Any, Any]:
     # Returns (base_causal_lm, tokenizer, text_config).
     _ensure_hf_token()
-    from transformers import AutoModelForCausalLM, AutoTokenizer, Gemma3TextConfig
+    from transformers import AutoConfig, AutoModelForCausalLM, AutoTokenizer
 
     dtype = getattr(torch, torch_dtype)
     tokenizer = AutoTokenizer.from_pretrained(model_id)
-    text_config = Gemma3TextConfig.from_pretrained(model_id)
+    raw_config = AutoConfig.from_pretrained(model_id)
+    if hasattr(raw_config, "get_text_config"):
+        text_config = raw_config.get_text_config()
+    else:
+        text_config = getattr(raw_config, "text_config", raw_config)
     model = AutoModelForCausalLM.from_pretrained(model_id, torch_dtype=dtype, attn_implementation="eager")
     return model, tokenizer, text_config
+
+
+def _decoder_layers(base_model: nn.Module) -> nn.ModuleList:
+    if hasattr(base_model, "model") and hasattr(base_model.model, "language_model") and hasattr(base_model.model.language_model, "layers"):
+        return base_model.model.language_model.layers
+    if hasattr(base_model, "language_model") and hasattr(base_model.language_model, "layers"):
+        return base_model.language_model.layers
+    if hasattr(base_model, "model") and hasattr(base_model.model, "layers"):
+        return base_model.model.layers
+    if hasattr(base_model, "layers"):
+        return base_model.layers
+    raise AttributeError("Could not locate decoder layers on base model")
+
+
+def _layer_kv_specs(base_model: nn.Module, text_config: Any, layer_indices: list[int]) -> dict[int, tuple[int, int]]:
+    layers = _decoder_layers(base_model)
+    specs: dict[int, tuple[int, int]] = {}
+    layer_types = getattr(text_config, "layer_types", None)
+    for li in layer_indices:
+        attn = layers[li].self_attn
+        head_dim = int(getattr(attn, "head_dim", getattr(text_config, "head_dim")))
+        if hasattr(attn, "k_proj"):
+            num_kv_heads = int(attn.k_proj.out_features // head_dim)
+        else:
+            layer_type = layer_types[li] if layer_types is not None else None
+            is_full = layer_type == "full_attention"
+            if is_full and getattr(text_config, "global_head_dim", None):
+                head_dim = int(text_config.global_head_dim)
+            num_kv_heads = int(getattr(text_config, "num_global_key_value_heads", None) or text_config.num_key_value_heads)
+        specs[li] = (num_kv_heads, head_dim)
+    return specs
 
 
 class AdapterModel(nn.Module):
@@ -49,7 +84,10 @@ class AdapterModel(nn.Module):
     @classmethod
     def from_config(cls, cfg: ExperimentConfig) -> tuple["AdapterModel", Any]:
         base, tokenizer, text_config = load_base_model(cfg.model.base_model_id, cfg.model.torch_dtype)
-        inject_layers = list(range(cfg.adapter.injection.inject_layers_start, cfg.adapter.injection.inject_layers_end + 1))
+        inject_layers = cfg.adapter.injection.layer_indices or list(
+            range(cfg.adapter.injection.inject_layers_start, cfg.adapter.injection.inject_layers_end + 1)
+        )
+        layer_kv_specs = _layer_kv_specs(base, text_config, inject_layers)
         encoder = ReferenceEncoder(
             hidden_size=text_config.hidden_size,
             num_queries=cfg.adapter.encoder.num_queries,
@@ -62,6 +100,7 @@ class AdapterModel(nn.Module):
             head_dim=text_config.head_dim,
             num_prefix_tokens=cfg.adapter.num_prefix_tokens,
             inject_layer_indices=inject_layers,
+            layer_kv_specs=layer_kv_specs,
             hidden_mult=cfg.adapter.projector.hidden_mult,
             use_trunk=cfg.adapter.projector.use_trunk,
         )

@@ -6,6 +6,7 @@ import re
 import time
 import urllib.error
 import urllib.request
+from datetime import date
 from pathlib import Path
 
 REGISTER = "speech"
@@ -18,6 +19,74 @@ USER_AGENT = "text-ip-adapter/0.1 (research; contact peter@omalley.io)"
 
 _STAGE_DIRECTIONS = re.compile(r"\[[^\]]{1,60}\]")
 _MULTI_BLANK = re.compile(r"\n\s*\n+")
+_DATE_SLUG_RE = re.compile(
+    r"/the-presidency/presidential-speeches/"
+    r"([a-z]+)-(\d{1,2})-(\d{4})-",
+    re.IGNORECASE,
+)
+_MONTHS = {
+    "january": 1,
+    "february": 2,
+    "march": 3,
+    "april": 4,
+    "may": 5,
+    "june": 6,
+    "july": 7,
+    "august": 8,
+    "september": 9,
+    "october": 10,
+    "november": 11,
+    "december": 12,
+}
+_PRESIDENT_TERMS: tuple[tuple[date, date, str], ...] = (
+    (date(1789, 4, 30), date(1797, 3, 4), "washington"),
+    (date(1797, 3, 4), date(1801, 3, 4), "adams"),
+    (date(1801, 3, 4), date(1809, 3, 4), "jefferson"),
+    (date(1809, 3, 4), date(1817, 3, 4), "madison"),
+    (date(1817, 3, 4), date(1825, 3, 4), "monroe"),
+    (date(1825, 3, 4), date(1829, 3, 4), "jqadams"),
+    (date(1829, 3, 4), date(1837, 3, 4), "jackson"),
+    (date(1837, 3, 4), date(1841, 3, 4), "vanburen"),
+    (date(1841, 3, 4), date(1841, 4, 4), "harrison"),
+    (date(1841, 4, 4), date(1845, 3, 4), "tyler"),
+    (date(1845, 3, 4), date(1849, 3, 4), "polk"),
+    (date(1849, 3, 4), date(1850, 7, 9), "taylor"),
+    (date(1850, 7, 9), date(1853, 3, 4), "fillmore"),
+    (date(1853, 3, 4), date(1857, 3, 4), "pierce"),
+    (date(1857, 3, 4), date(1861, 3, 4), "buchanan"),
+    (date(1861, 3, 4), date(1865, 4, 15), "lincoln"),
+    (date(1865, 4, 15), date(1869, 3, 4), "andrew_johnson"),
+    (date(1869, 3, 4), date(1877, 3, 4), "grant"),
+    (date(1877, 3, 4), date(1881, 3, 4), "hayes"),
+    (date(1881, 3, 4), date(1881, 9, 19), "garfield"),
+    (date(1881, 9, 19), date(1885, 3, 4), "arthur"),
+    (date(1885, 3, 4), date(1889, 3, 4), "cleveland"),
+    (date(1889, 3, 4), date(1893, 3, 4), "bharrison"),
+    (date(1893, 3, 4), date(1897, 3, 4), "cleveland"),
+    (date(1897, 3, 4), date(1901, 9, 14), "mckinley"),
+    (date(1901, 9, 14), date(1909, 3, 4), "theodore_roosevelt"),
+    (date(1909, 3, 4), date(1913, 3, 4), "taft"),
+    (date(1913, 3, 4), date(1921, 3, 4), "wilson"),
+    (date(1921, 3, 4), date(1923, 8, 2), "harding"),
+    (date(1923, 8, 2), date(1929, 3, 4), "coolidge"),
+    (date(1929, 3, 4), date(1933, 3, 4), "hoover"),
+    (date(1933, 3, 4), date(1945, 4, 12), "fdroosevelt"),
+    (date(1945, 4, 12), date(1953, 1, 20), "truman"),
+    (date(1953, 1, 20), date(1961, 1, 20), "eisenhower"),
+    (date(1961, 1, 20), date(1963, 11, 22), "kennedy"),
+    (date(1963, 11, 22), date(1969, 1, 20), "lbjohnson"),
+    (date(1969, 1, 20), date(1974, 8, 9), "nixon"),
+    (date(1974, 8, 9), date(1977, 1, 20), "ford"),
+    (date(1977, 1, 20), date(1981, 1, 20), "carter"),
+    (date(1981, 1, 20), date(1989, 1, 20), "reagan"),
+    (date(1989, 1, 20), date(1993, 1, 20), "bush"),
+    (date(1993, 1, 20), date(2001, 1, 20), "clinton"),
+    (date(2001, 1, 20), date(2009, 1, 20), "gwbush"),
+    (date(2009, 1, 20), date(2017, 1, 20), "obama"),
+    (date(2017, 1, 20), date(2021, 1, 20), "trump"),
+    (date(2021, 1, 20), date(2025, 1, 20), "biden"),
+    (date(2025, 1, 20), date(2029, 1, 20), "trump"),
+)
 
 
 def _http_get(url: str, timeout: int = 30) -> str:
@@ -75,10 +144,27 @@ def fetch_speech_urls(cache_dir: Path, sitemap_url: str = SITEMAP_URL) -> list[s
 
 
 def _president_slug_from_url(url: str) -> str | None:
-    # Expected format: /the-presidency/presidential-speeches/<date>-<president>-<title-slug>
-    # In practice Miller Center path is /the-presidency/presidential-speeches/<date>-<title>
-    # and the president is in metadata on the page. We scrape it from the article tag attrs
-    # if present, else None.
+    """Infer president from Miller Center speech URL date.
+
+    Current Miller speech pages often expose no page-local president metadata.
+    A global nav menu lists Washington first, so anchor-based fallback silently
+    collapses every page to `washington`. The URL date is stable and sufficient
+    for presidential speeches.
+    """
+    match = _DATE_SLUG_RE.search(url)
+    if not match:
+        return None
+    month_name, day_raw, year_raw = match.groups()
+    month = _MONTHS.get(month_name.lower())
+    if month is None:
+        return None
+    try:
+        speech_date = date(int(year_raw), month, int(day_raw))
+    except ValueError:
+        return None
+    for start, end, slug in _PRESIDENT_TERMS:
+        if start <= speech_date < end:
+            return slug
     return None
 
 
@@ -102,15 +188,6 @@ def _extract_president_and_transcript(html: str) -> tuple[str | None, str | None
                 if m:
                     pres = m.group(1).replace("-", "_")
                     break
-        if pres is None:
-            # Try an anchor linking to the president page.
-            for a in soup.find_all("a", href=True):
-                href = a["href"]
-                m = re.search(r"/president/([a-z0-9\-]+)", href)
-                if m:
-                    pres = m.group(1).replace("-", "_")
-                    break
-
         transcript: str | None = None
         # Miller Center typically has a <div class="transcript"> or field-item.
         candidates = soup.select(
@@ -217,7 +294,8 @@ def ingest_speeches(
         fetched += 1
         if not html:
             continue
-        pres, transcript = _extract_president_and_transcript(html)
+        html_pres, transcript = _extract_president_and_transcript(html)
+        pres = _president_slug_from_url(url) or html_pres
         if not pres or not transcript:
             continue
         transcript = _clean_transcript(transcript)

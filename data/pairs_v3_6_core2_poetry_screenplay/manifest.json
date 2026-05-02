@@ -1,0 +1,63 @@
+{
+  "corpus_version": "v3.6_core2_poetry_screenplay",
+  "derived_from": "data/pairs_v3_5_artifact_clean_core3",
+  "registers": [
+    "poetry",
+    "screenplay"
+  ],
+  "audit": {
+    "splits": {
+      "train": {
+        "rows": 7900,
+        "by_register": {
+          "poetry": 2265,
+          "screenplay": 5635
+        },
+        "authors_by_register": {
+          "poetry": 23,
+          "screenplay": 191
+        }
+      },
+      "val": {
+        "rows": 232,
+        "by_register": {
+          "poetry": 182,
+          "screenplay": 50
+        },
+        "authors_by_register": {
+          "poetry": 2,
+          "screenplay": 2
+        }
+      },
+      "test": {
+        "rows": 197,
+        "by_register": {
+          "poetry": 147,
+          "screenplay": 50
+        },
+        "authors_by_register": {
+          "poetry": 2,
+          "screenplay": 2
+        }
+      }
+    },
+    "author_disjoint": {
+      "train_val": true,
+      "train_test": true,
+      "val_test": true
+    },
+    "pass": true
+  },
+  "balanced_probes": {
+    "rows": 20,
+    "by_register": {
+      "poetry": 10,
+      "screenplay": 10
+    },
+    "authors_by_register": {
+      "poetry": 4,
+      "screenplay": 4
+    }
+  },
+  "sha256_core": "1b381e81b4441b461b6930c6616cc3f7c453959a1f2252e482c241bb673df33b"
+}

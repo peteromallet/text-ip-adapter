@@ -1,0 +1,202 @@
+{
+  "audit": {
+    "failures": [
+      "train_essay_gte_80: got 6"
+    ],
+    "gates": {
+      "author_disjoint_train_test": true,
+      "author_disjoint_train_val": true,
+      "author_disjoint_val_test": true,
+      "pass": false,
+      "source_dataset_present": true,
+      "test_essay_authors_gte_1": true,
+      "test_essay_gte_50": true,
+      "test_poetry_authors_gte_1": true,
+      "test_poetry_gte_50": true,
+      "test_screenplay_authors_gte_1": true,
+      "test_screenplay_gte_50": true,
+      "test_speech_authors_gte_1": true,
+      "test_speech_gte_50": true,
+      "train_essay_gte_80": false,
+      "train_poetry_gte_1500": true,
+      "train_screenplay_gte_1000": true,
+      "train_speech_gte_700": true,
+      "val_essay_authors_gte_1": true,
+      "val_essay_gte_50": true,
+      "val_poetry_authors_gte_1": true,
+      "val_poetry_gte_50": true,
+      "val_screenplay_authors_gte_1": true,
+      "val_screenplay_gte_50": true,
+      "val_speech_authors_gte_1": true,
+      "val_speech_gte_50": true
+    }
+  },
+  "audit_blocklist": "data/audits/v3_2_gptmini_high_conf_delete_blocklist.json",
+  "balanced_probes": {
+    "authors_by_register": {
+      "essay": 2,
+      "poetry": 2,
+      "screenplay": 4,
+      "speech": 2
+    },
+    "by_register": {
+      "essay": 5,
+      "poetry": 5,
+      "screenplay": 5,
+      "speech": 5
+    },
+    "rows": 20,
+    "sources_by_register": {
+      "essay": {
+        "unknown": 5
+      },
+      "poetry": {
+        "unknown": 5
+      },
+      "screenplay": {
+        "unknown": 5
+      },
+      "speech": {
+        "unknown": 5
+      }
+    }
+  },
+  "blocklist_report": {
+    "input_pairs": 10683,
+    "kept_pairs": 10085,
+    "removed_by_reason": {
+      "pair_doc_id": 401,
+      "target_doc_id": 598
+    },
+    "removed_by_register": {
+      "essay": 132,
+      "poetry": 190,
+      "screenplay": 2,
+      "speech": 274
+    },
+    "removed_pairs": 598
+  },
+  "corpus_version": "v3.3-candidate-fast-from-v3.2",
+  "instruction_mode": "content_style",
+  "known_limitation": "essay has only three usable authors after cleanup, so two-author val/test plus train is impossible without source expansion",
+  "min_heldout_authors_per_register": 1,
+  "pairs": {
+    "authors_by_register": {
+      "essay": 3,
+      "poetry": 32,
+      "screenplay": 197,
+      "speech": 35
+    },
+    "by_register": {
+      "essay": 168,
+      "poetry": 2851,
+      "screenplay": 5819,
+      "speech": 1247
+    },
+    "rows": 10085,
+    "sources_by_register": {
+      "essay": {
+        "project_gutenberg": 168
+      },
+      "poetry": {
+        "project_gutenberg": 2851
+      },
+      "screenplay": {
+        "imsdb": 5819
+      },
+      "speech": {
+        "miller_center": 1247
+      }
+    }
+  },
+  "source_corpus": "data/pairs_v3_2",
+  "splits": {
+    "test": {
+      "authors_by_register": {
+        "essay": 1,
+        "poetry": 1,
+        "screenplay": 2,
+        "speech": 1
+      },
+      "by_register": {
+        "essay": 65,
+        "poetry": 67,
+        "screenplay": 50,
+        "speech": 50
+      },
+      "rows": 232,
+      "sources_by_register": {
+        "essay": {
+          "project_gutenberg": 65
+        },
+        "poetry": {
+          "project_gutenberg": 67
+        },
+        "screenplay": {
+          "imsdb": 50
+        },
+        "speech": {
+          "miller_center": 50
+        }
+      }
+    },
+    "train": {
+      "authors_by_register": {
+        "essay": 1,
+        "poetry": 30,
+        "screenplay": 193,
+        "speech": 33
+      },
+      "by_register": {
+        "essay": 6,
+        "poetry": 2694,
+        "screenplay": 5712,
+        "speech": 1147
+      },
+      "rows": 9559,
+      "sources_by_register": {
+        "essay": {
+          "project_gutenberg": 6
+        },
+        "poetry": {
+          "project_gutenberg": 2694
+        },
+        "screenplay": {
+          "imsdb": 5712
+        },
+        "speech": {
+          "miller_center": 1147
+        }
+      }
+    },
+    "val": {
+      "authors_by_register": {
+        "essay": 1,
+        "poetry": 1,
+        "screenplay": 2,
+        "speech": 1
+      },
+      "by_register": {
+        "essay": 97,
+        "poetry": 90,
+        "screenplay": 57,
+        "speech": 50
+      },
+      "rows": 294,
+      "sources_by_register": {
+        "essay": {
+          "project_gutenberg": 97
+        },
+        "poetry": {
+          "project_gutenberg": 90
+        },
+        "screenplay": {
+          "imsdb": 57
+        },
+        "speech": {
+          "miller_center": 50
+        }
+      }
+    }
+  }
+}

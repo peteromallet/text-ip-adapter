@@ -1,0 +1,126 @@
+{
+  "chunks": {
+    "chunk_00.decisions.jsonl": {
+      "delete": 246,
+      "keep": 54,
+      "rows": 300
+    },
+    "chunk_01.decisions.jsonl": {
+      "delete": 79,
+      "edit": 26,
+      "keep": 195,
+      "rows": 300
+    },
+    "chunk_02.decisions.jsonl": {
+      "delete": 16,
+      "edit": 259,
+      "keep": 25,
+      "rows": 300
+    },
+    "chunk_03.decisions.jsonl": {
+      "delete": 24,
+      "edit": 180,
+      "keep": 96,
+      "rows": 300
+    },
+    "chunk_04.decisions.jsonl": {
+      "delete": 36,
+      "edit": 209,
+      "keep": 55,
+      "rows": 300
+    }
+  },
+  "manual_audit_actions": {
+    "delete": 401,
+    "edit": 674,
+    "keep": 425
+  },
+  "manual_audit_rows": 1500,
+  "splits": {
+    "test": {
+      "actions": {
+        "delete": 113,
+        "keep": 13,
+        "unaudited_keep": 110
+      },
+      "actions_by_register": {
+        "essay": {
+          "keep": 13,
+          "unaudited_keep": 58
+        },
+        "poetry": {
+          "delete": 63,
+          "unaudited_keep": 2
+        },
+        "screenplay": {
+          "unaudited_keep": 50
+        },
+        "speech": {
+          "delete": 50
+        }
+      },
+      "input": 236,
+      "output": 123
+    },
+    "train": {
+      "actions": {
+        "delete": 278,
+        "edit": 674,
+        "keep": 358,
+        "unaudited_keep": 8845
+      },
+      "actions_by_register": {
+        "essay": {
+          "delete": 28,
+          "unaudited_keep": 92
+        },
+        "poetry": {
+          "delete": 122,
+          "edit": 7,
+          "keep": 105,
+          "unaudited_keep": 2666
+        },
+        "screenplay": {
+          "delete": 2,
+          "keep": 128,
+          "unaudited_keep": 5584
+        },
+        "speech": {
+          "delete": 126,
+          "edit": 667,
+          "keep": 125,
+          "unaudited_keep": 503
+        }
+      },
+      "input": 10155,
+      "output": 9877
+    },
+    "val": {
+      "actions": {
+        "delete": 10,
+        "keep": 54,
+        "unaudited_keep": 228
+      },
+      "actions_by_register": {
+        "essay": {
+          "delete": 6,
+          "unaudited_keep": 103
+        },
+        "poetry": {
+          "delete": 1,
+          "keep": 54,
+          "unaudited_keep": 21
+        },
+        "screenplay": {
+          "unaudited_keep": 57
+        },
+        "speech": {
+          "delete": 3,
+          "unaudited_keep": 47
+        }
+      },
+      "input": 292,
+      "output": 282
+    }
+  }
+}

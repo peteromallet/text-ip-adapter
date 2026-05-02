@@ -30,6 +30,11 @@ def main() -> int:
     parser.add_argument("--probe-path", default=None, help="optional: fixed probe-set path (bypass build_default_probes)")
     parser.add_argument("--max-new-tokens", type=int, default=120)
     parser.add_argument("--step-tag", type=int, default=2000, help="integer step tag written into samples.jsonl")
+    parser.add_argument("--do-sample", action="store_true", help="enable sampled decoding for all probe variants")
+    parser.add_argument("--temperature", type=float, default=1.0)
+    parser.add_argument("--top-p", type=float, default=None)
+    parser.add_argument("--repetition-penalty", type=float, default=None)
+    parser.add_argument("--no-repeat-ngram-size", type=int, default=None)
     args = parser.parse_args()
 
     # Load config.
@@ -67,6 +72,17 @@ def main() -> int:
     if out_path.exists():
         out_path.unlink()
     print(f"[eval] running {len(probes)} probes, writing to {out_path}")
+    generation_kwargs = {
+        "do_sample": args.do_sample,
+        "temperature": args.temperature,
+    }
+    if args.top_p is not None:
+        generation_kwargs["top_p"] = args.top_p
+    if args.repetition_penalty is not None:
+        generation_kwargs["repetition_penalty"] = args.repetition_penalty
+    if args.no_repeat_ngram_size is not None:
+        generation_kwargs["no_repeat_ngram_size"] = args.no_repeat_ngram_size
+    print(f"[eval] generation kwargs: {generation_kwargs}")
     run_sample_probe(
         model=model,
         tokenizer=tokenizer,
@@ -75,6 +91,9 @@ def main() -> int:
         out_path=out_path,
         max_new_tokens=args.max_new_tokens,
         baseline_done_flag=set(),
+        generation_kwargs=generation_kwargs,
+        prompt_format=cfg.data.prompt_format,
+        prompt_reference_max=cfg.data.prompt_reference_max,
     )
     n = sum(1 for _ in open(out_path))
     print(f"[eval] wrote {n} sample rows to {out_path}")

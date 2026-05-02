@@ -1,0 +1,52 @@
+# Experiment 036 candidate: continue Gemma4 E2B style adapter toward ~10k total steps.
+model:
+  base_model_id: google/gemma-4-E2B
+  torch_dtype: bfloat16
+
+adapter:
+  num_prefix_tokens: 16
+  num_queries: 16
+  encoder:
+    num_queries: 16
+    perceiver_layers: 2
+    perceiver_heads: 8
+  projector:
+    hidden_mult: 2
+    use_trunk: false
+  injection:
+    layer_indices: [19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34]
+    inject_layers_start: 19
+    inject_layers_end: 34
+
+data:
+  train_path: data/pairs_v5_10_poetry_llm_style_medium_strong/train.jsonl
+  val_path: data/pairs_v5_10_poetry_llm_style_medium_strong/val.jsonl
+  test_path: data/pairs_v5_10_poetry_llm_style_medium_strong/test.jsonl
+  reference_max: 512
+  instruction_max: 64
+  target_max: 512
+
+training:
+  output_dir: /tmp/stage1_gemma4_e2b_poetry_v5_10_style_continue_to_10k
+  batch_size: 2
+  # Additional steps from the 2k cold-start checkpoint; total exposure is ~10k.
+  max_steps: 8000
+  lr_projector: 1.0e-5
+  lr_encoder: 5.0e-6
+  warmup: 100
+  min_lr_ratio: 0.25
+  save_every: 2000
+  log_every: 25
+  mixed_precision: bf16
+  sample_every: 0
+  sample_max_new_tokens: 120
+  probe_path: data/pairs_v5_10_poetry_llm_style_medium_strong/probes_balanced_n24.jsonl
+  contrastive_weight: 0.2
+  contrastive_clamp: true
+  style_triplet_weight: 1.5
+  style_triplet_margin: 0.35
+  init_from: /tmp/exp035_final.pt
+
+runpod:
+  storage_name: Peter
+  remote_root: /workspace/text-ip-adapter

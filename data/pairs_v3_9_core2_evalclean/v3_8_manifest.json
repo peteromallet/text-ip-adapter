@@ -1,0 +1,351 @@
+{
+  "corpus_version": "v3.8_core2_cleanheldout",
+  "derived_from": "text-ip-adapter/data/pairs_v3_7_core2_repaired",
+  "warmstart_train_exclusion": "text-ip-adapter/data/pairs/train.llm.jsonl",
+  "registers": [
+    "poetry",
+    "screenplay"
+  ],
+  "heldout_authors": {
+    "val": {
+      "poetry": [
+        "edna_millay",
+        "edwin_arlington_robinson",
+        "john_masefield",
+        "matthew_arnold"
+      ],
+      "screenplay": [
+        "birds_the",
+        "bourne_ultimatum_the",
+        "cellular",
+        "chasing_amy"
+      ]
+    },
+    "test": {
+      "poetry": [
+        "christina_rossetti",
+        "emily_dickinson",
+        "sara_teasdale",
+        "stephen_crane"
+      ],
+      "screenplay": [
+        "50_50",
+        "ad_astra",
+        "asteroid_city",
+        "blood_simple"
+      ]
+    }
+  },
+  "warmstart_contamination": {
+    "val": {
+      "poetry": [],
+      "screenplay": []
+    },
+    "test": {
+      "poetry": [],
+      "screenplay": []
+    }
+  },
+  "audit": {
+    "splits": {
+      "train": {
+        "rows": 7305,
+        "by_register": {
+          "poetry": 1827,
+          "screenplay": 5478
+        },
+        "authors_by_register": {
+          "poetry": 19,
+          "screenplay": 186
+        },
+        "artifact_counts": {},
+        "unique_refs_by_register_author": {
+          "poetry": {
+            "algernon_swinburne": 2,
+            "amy_lowell": 1,
+            "dante_rossetti": 1,
+            "edgar_allan_poe": 1,
+            "elizabeth_browning": 3,
+            "gerard_manley_hopkins": 2,
+            "henry_longfellow": 1,
+            "john_keats": 5,
+            "oscar_wilde": 2,
+            "robert_frost": 3,
+            "rudyard_kipling": 3,
+            "rupert_brooke": 1,
+            "t_s_eliot": 7,
+            "thomas_hardy": 3,
+            "walt_whitman": 1,
+            "wilfred_owen": 3,
+            "william_blake": 3,
+            "william_butler_yeats": 2,
+            "william_wordsworth": 2
+          },
+          "screenplay": {
+            "10_things_i_hate_about_you": 1,
+            "12_and_holding": 1,
+            "12_monkeys": 1,
+            "12_years_a_slave": 1,
+            "1492_conquest_of_paradise": 1,
+            "15_minutes": 1,
+            "17_again": 1,
+            "2001_a_space_odyssey": 4,
+            "2012": 1,
+            "20th_century_women": 1,
+            "28_days_later": 1,
+            "30_minutes_or_less": 1,
+            "48_hrs": 3,
+            "500_days_of_summer": 1,
+            "8mm": 1,
+            "9": 5,
+            "a_few_good_men": 1,
+            "a_good_person": 1,
+            "a_million_miles_away": 1,
+            "a_most_violent_year": 1,
+            "a_real_pain": 1,
+            "a_scanner_darkly": 1,
+            "abyss_the": 1,
+            "ace_ventura_pet_detective": 1,
+            "adaptation": 1,
+            "adjustment_bureau_the": 1,
+            "adventures_of_buckaroo_banzai_across_the_eighth_dimension_the": 1,
+            "affliction": 1,
+            "after_life": 1,
+            "agnes_of_god": 3,
+            "air": 1,
+            "air_force_one": 1,
+            "airplane_2_the_sequel": 1,
+            "ali": 1,
+            "alien_3": 2,
+            "alien_nation": 1,
+            "alien_resurrection": 2,
+            "alien_vs_predator": 1,
+            "aliens": 1,
+            "all_about_eve": 2,
+            "all_about_steve": 1,
+            "all_of_us_strangers": 1,
+            "alone_in_the_dark": 1,
+            "amadeus": 1,
+            "amelia": 1,
+            "american_beauty": 1,
+            "american_fiction": 1,
+            "american_history_x": 1,
+            "american_hustle": 2,
+            "american_milkshake": 1,
+            "american_pie": 1,
+            "american_president_the": 1,
+            "american_psycho": 1,
+            "american_shaolin_king_of_kickboxers_ii": 1,
+            "american_splendor": 1,
+            "american_werewolf_in_london": 3,
+            "analyze_that": 1,
+            "anastasia": 1,
+            "angel_eyes": 1,
+            "anna_karenina": 1,
+            "annie_hall": 1,
+            "anniversary_party_the": 1,
+            "antitrust": 1,
+            "antz": 1,
+            "apartment_the": 1,
+            "april_fool_s_day": 1,
+            "apt_pupil": 1,
+            "arbitrage": 1,
+            "arcade": 1,
+            "armageddon": 1,
+            "arthur": 1,
+            "as_good_as_it_gets": 1,
+            "assassins": 1,
+            "assignment_the": 1,
+            "at_first_sight": 1,
+            "austin_powers_international_man_of_mystery": 1,
+            "austin_powers_the_spy_who_shagged_me": 1,
+            "autumn_in_new_york": 1,
+            "avatar": 1,
+            "avengers_endgame": 1,
+            "avengers_the_2012": 1,
+            "bachelor_party": 1,
+            "back_up_plan_the": 1,
+            "bad_country": 1,
+            "bad_day_at_black_rock": 1,
+            "bad_santa": 1,
+            "bad_teacher": 1,
+            "badlands": 1,
+            "bamboozled": 1,
+            "barbie": 1,
+            "barry_lyndon": 1,
+            "basic": 1,
+            "basic_instinct": 1,
+            "basquiat": 1,
+            "batman": 1,
+            "batman_2": 1,
+            "battle_los_angeles": 1,
+            "battle_of_shaker_heights_the": 1,
+            "beach_the": 1,
+            "bean": 1,
+            "beasts_of_no_nation": 1,
+            "beasts_of_the_southern_wild": 1,
+            "beavis_and_butt_head_do_america": 1,
+            "beekeeper_the": 1,
+            "beginners": 1,
+            "being_john_malkovich": 1,
+            "being_there": 1,
+            "believer_the": 1,
+            "beloved": 1,
+            "big_blue_the": 1,
+            "big_eyes": 1,
+            "big_fish": 1,
+            "big_sick_the": 1,
+            "birdman": 3,
+            "birthday_girl": 1,
+            "black_dahlia_the": 1,
+            "black_panther": 1,
+            "black_rain": 1,
+            "black_snake_moan": 1,
+            "blackberry": 1,
+            "blackkklansman": 1,
+            "blade": 1,
+            "blade_ii": 1,
+            "blade_runner": 1,
+            "blade_trinity": 1,
+            "blast_from_the_past_the": 1,
+            "blink_twice": 1,
+            "blow": 1,
+            "blue_valentine": 1,
+            "body_heat": 1,
+            "body_of_evidence": 1,
+            "bones": 1,
+            "bonnie_and_clyde": 1,
+            "book_of_eli_the": 1,
+            "bookworm": 1,
+            "boondock_saints_2_all_saints_day": 1,
+            "boondock_saints_the": 1,
+            "bottle_rocket": 1,
+            "bound": 1,
+            "bounty_hunter_the": 1,
+            "bourne_identity_the": 1,
+            "box_the": 1,
+            "boxtrolls_the": 1,
+            "boyhood": 1,
+            "braveheart": 1,
+            "breakdown": 1,
+            "breaking_away": 1,
+            "brick": 1,
+            "bridesmaids": 1,
+            "bringing_out_the_dead": 1,
+            "broadcast_news": 1,
+            "broken_arrow": 1,
+            "bruce_almighty": 1,
+            "brutalist_the": 1,
+            "buffy_the_vampire_slayer": 1,
+            "bull_durham": 1,
+            "burlesque": 1,
+            "butterfly_effect_the": 1,
+            "capote": 1,
+            "cars_2": 1,
+            "case_39": 1,
+            "casino": 1,
+            "cassandro": 1,
+            "cast_away": 1,
+            "cedar_rapids": 1,
+            "cell_the": 1,
+            "change_up_the": 1,
+            "changeling": 1,
+            "charade": 1,
+            "charlie_s_angels": 1,
+            "chasing_sleep": 1,
+            "cherry_falls": 1,
+            "chinatown": 1,
+            "christ_complex": 1,
+            "chronicle": 1,
+            "cider_house_rules_the": 1,
+            "cincinnati_kid_the": 1,
+            "cirque_du_freak_the_vampire_s_assistant": 1,
+            "citizen_kane": 1,
+            "city_of_joy": 1,
+            "clash_of_the_titans": 1,
+            "cliffhanger": 1,
+            "coco": 1,
+            "code_of_silence": 1,
+            "cold_mountain": 1,
+            "colombiana": 1
+          }
+        }
+      },
+      "val": {
+        "rows": 498,
+        "by_register": {
+          "poetry": 390,
+          "screenplay": 108
+        },
+        "authors_by_register": {
+          "poetry": 4,
+          "screenplay": 4
+        },
+        "artifact_counts": {},
+        "unique_refs_by_register_author": {
+          "poetry": {
+            "edna_millay": 2,
+            "edwin_arlington_robinson": 2,
+            "john_masefield": 2,
+            "matthew_arnold": 2
+          },
+          "screenplay": {
+            "birds_the": 3,
+            "bourne_ultimatum_the": 5,
+            "cellular": 5,
+            "chasing_amy": 4
+          }
+        }
+      },
+      "test": {
+        "rows": 497,
+        "by_register": {
+          "poetry": 377,
+          "screenplay": 120
+        },
+        "authors_by_register": {
+          "poetry": 4,
+          "screenplay": 4
+        },
+        "artifact_counts": {},
+        "unique_refs_by_register_author": {
+          "poetry": {
+            "christina_rossetti": 1,
+            "emily_dickinson": 1,
+            "sara_teasdale": 2,
+            "stephen_crane": 2
+          },
+          "screenplay": {
+            "50_50": 1,
+            "ad_astra": 1,
+            "asteroid_city": 2,
+            "blood_simple": 2
+          }
+        }
+      }
+    },
+    "author_disjoint": {
+      "train_val": true,
+      "train_test": true,
+      "val_test": true
+    },
+    "balanced_probes": {
+      "rows": 32,
+      "by_register": {
+        "poetry": 16,
+        "screenplay": 16
+      },
+      "authors_by_register": {
+        "poetry": 8,
+        "screenplay": 8
+      },
+      "unique_ref_doc_ids_by_register": {
+        "poetry": 14,
+        "screenplay": 14
+      },
+      "duplicate_probe_refs": 4
+    },
+    "pass": true
+  },
+  "sha256_core": "3e650e0ea22242f8c849384439b8822bf7cfcf11ca4f3255b079db8fa1a2f1d2"
+}

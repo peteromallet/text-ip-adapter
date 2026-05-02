@@ -1,0 +1,66 @@
+{
+  "description": "v3.9 with artifact-stripped text and generic register-level instructions",
+  "output": "data/pairs_v4_core2_styleclean",
+  "probes_balanced.jsonl": {
+    "copied_from": "data/pairs_v3_9_core2_evalclean/probes_balanced.jsonl",
+    "sha256": "e09237511d5b5e4c72b0e8b693e5800fd1b85e7107739e2be9273d990e5f781a"
+  },
+  "probes_balanced_n32.jsonl": {
+    "copied_from": "data/pairs_v3_9_core2_evalclean/probes_balanced_n32.jsonl",
+    "sha256": "e09237511d5b5e4c72b0e8b693e5800fd1b85e7107739e2be9273d990e5f781a"
+  },
+  "source": "data/pairs_v3_9_core2_evalclean",
+  "splits": {
+    "test": {
+      "after_registers": {
+        "poetry": 359,
+        "screenplay": 120
+      },
+      "before_registers": {
+        "poetry": 377,
+        "screenplay": 120
+      },
+      "drop_reasons": {
+        "dirty_target": 18,
+        "kept": 479
+      },
+      "kept_rows": 479,
+      "sha256": "3446f233ee1f88e7b84b0386031ab3a3d056043be3cc61523632c06be6ad434a",
+      "source_rows": 497
+    },
+    "train": {
+      "after_registers": {
+        "poetry": 1795,
+        "screenplay": 5478
+      },
+      "before_registers": {
+        "poetry": 1827,
+        "screenplay": 5478
+      },
+      "drop_reasons": {
+        "dirty_target": 32,
+        "kept": 7273
+      },
+      "kept_rows": 7273,
+      "sha256": "d85d3d6af70e04d6f8f22cf7e6b12691d53f5f65aa452971f37b290100ec88a6",
+      "source_rows": 7305
+    },
+    "val": {
+      "after_registers": {
+        "poetry": 387,
+        "screenplay": 108
+      },
+      "before_registers": {
+        "poetry": 390,
+        "screenplay": 108
+      },
+      "drop_reasons": {
+        "dirty_target": 3,
+        "kept": 495
+      },
+      "kept_rows": 495,
+      "sha256": "038f93d749e924a1013fc43af7c756b863a4b29c7cbe67b3b50a5d663cd65e7b",
+      "source_rows": 498
+    }
+  }
+}

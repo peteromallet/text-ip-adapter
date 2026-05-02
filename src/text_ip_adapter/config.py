@@ -25,6 +25,7 @@ class ProjectorConfig(BaseModel):
 class InjectionConfig(BaseModel):
     inject_layers_start: int = 17
     inject_layers_end: int = 32
+    layer_indices: list[int] | None = None
 
 
 class AdapterConfig(BaseModel):
@@ -49,6 +50,8 @@ class DataConfig(BaseModel):
     test_path: str = "data/pairs/test.jsonl"
     reference_max: int = 512
     instruction_max: int = 128
+    prompt_format: str = "instruction"  # instruction | paired_completion
+    prompt_reference_max: int = 384
     target_max: int = 256
 
 
@@ -59,6 +62,7 @@ class TrainingConfig(BaseModel):
     lr_projector: float = 1e-4
     lr_encoder: float = 5e-5
     warmup: int = 200
+    min_lr_ratio: float = 0.0
     log_every: int = 10
     save_every: int = 500
     gradient_clip: float = 1.0
@@ -70,6 +74,11 @@ class TrainingConfig(BaseModel):
     # Contrastive loss on projector K/V outputs (exp 004+).
     contrastive_weight: float = 0.0  # 0 = disabled; >0 enables contrastive term
     contrastive_clamp: bool = True  # clamp off-diag cosines at 0 before averaging (penalize positive)
+    style_triplet_weight: float = 0.0  # optional own/positive-author/negative-author K/V triplet loss
+    style_triplet_margin: float = 0.2
+    style_contrastive_weight: float = 0.0  # batch-size-independent own/positive vs own/negative K/V loss
+    style_contrastive_temperature: float = 0.2
+    init_from: str = ""  # path to a trainable state_dict (.pt) to warm-start from; empty = train from scratch
 
 
 class RunPodStageConfig(BaseModel):

@@ -1,0 +1,79 @@
+{
+  "description": "strict poetry-only v4.3 with heading stripping and stage/prose filtering",
+  "output": "data/pairs_v4_3_poetry_strict",
+  "probes_balanced.jsonl": {
+    "rows": 16,
+    "sha256": "bab3f6800f078e1a463c1f3b15f6091912acd8f20fff7b10378a39b0e6ed435d"
+  },
+  "probes_balanced_n16.jsonl": {
+    "rows": 16,
+    "sha256": "bab3f6800f078e1a463c1f3b15f6091912acd8f20fff7b10378a39b0e6ed435d"
+  },
+  "source": "data/pairs_v4_1_core2_styleclean_genericprobes",
+  "splits": {
+    "test": {
+      "audit": {
+        "kept": 358,
+        "not_poetry": 120,
+        "not_verse_like": 1
+      },
+      "authors": {
+        "christina_rossetti": 100,
+        "emily_dickinson": 86,
+        "sara_teasdale": 87,
+        "stephen_crane": 85
+      },
+      "heading_stripped_rows": 107,
+      "rows": 358,
+      "sha256": "c65eb287f50c13d0afb838359440562e8e7a331911d80b3cb0651a8f0012b03d"
+    },
+    "train": {
+      "audit": {
+        "kept": 1771,
+        "not_poetry": 5478,
+        "not_verse_like": 19,
+        "stage_like": 5
+      },
+      "authors": {
+        "algernon_swinburne": 96,
+        "amy_lowell": 94,
+        "dante_rossetti": 100,
+        "edgar_allan_poe": 73,
+        "elizabeth_browning": 100,
+        "gerard_manley_hopkins": 92,
+        "henry_longfellow": 96,
+        "john_keats": 100,
+        "oscar_wilde": 97,
+        "robert_frost": 100,
+        "rudyard_kipling": 59,
+        "rupert_brooke": 98,
+        "t_s_eliot": 94,
+        "thomas_hardy": 92,
+        "walt_whitman": 96,
+        "wilfred_owen": 94,
+        "william_blake": 100,
+        "william_butler_yeats": 95,
+        "william_wordsworth": 95
+      },
+      "heading_stripped_rows": 477,
+      "rows": 1771,
+      "sha256": "10c4b4f82aa9d9d1dd657319576e04538ed309f5c95b4a6c135a0728c5264ae4"
+    },
+    "val": {
+      "audit": {
+        "kept": 378,
+        "not_poetry": 108,
+        "not_verse_like": 9
+      },
+      "authors": {
+        "edna_millay": 95,
+        "edwin_arlington_robinson": 97,
+        "john_masefield": 96,
+        "matthew_arnold": 90
+      },
+      "heading_stripped_rows": 264,
+      "rows": 378,
+      "sha256": "23a7e66479caf7eae6c1261afa000d7d61ee7f6b11c83be5014370947c0f2967"
+    }
+  }
+}

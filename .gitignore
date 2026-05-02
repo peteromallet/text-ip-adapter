@@ -7,3 +7,4 @@ data/pairs/
 checkpoints/
 wandb/
 *.egg-info/
+this.env

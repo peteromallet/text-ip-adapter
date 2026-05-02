@@ -1,0 +1,48 @@
+# Dry-run: no-trunk projector on v2 corpus (13.5k pairs, cleaned).
+# Step B of the A→B→C plan. 2000 steps (same as 006) on v2_clean data.
+# If T3b-opus ≥ 60% and mode collapse < 10%, proceed to BIG training (step C).
+model:
+  base_model_id: google/gemma-3-4b-pt
+  torch_dtype: bfloat16
+
+adapter:
+  num_prefix_tokens: 16
+  num_queries: 16
+  encoder:
+    num_queries: 16
+    perceiver_layers: 2
+    perceiver_heads: 8
+  projector:
+    hidden_mult: 2
+    use_trunk: false
+  injection:
+    inject_layers_start: 17
+    inject_layers_end: 32
+
+data:
+  train_path: data/pairs_v2/train.v2_clean.jsonl
+  val_path: data/pairs_v2/val.v2_clean.jsonl
+  test_path: data/pairs_v2/test.v2_clean.jsonl
+  reference_max: 512
+  instruction_max: 128
+  target_max: 256
+
+training:
+  output_dir: checkpoints/stage1_v2_dryrun
+  batch_size: 4
+  max_steps: 2000
+  lr_projector: 1.0e-4
+  lr_encoder: 5.0e-5
+  warmup: 200
+  save_every: 500
+  log_every: 10
+  mixed_precision: bf16
+  sample_every: 100
+  sample_max_new_tokens: 120
+  probe_path: data/pairs/probes.llm.jsonl
+  contrastive_weight: 0.1
+  contrastive_clamp: true
+
+runpod:
+  storage_name: Peter
+  remote_root: /workspace/text-ip-adapter

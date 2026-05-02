@@ -1,0 +1,242 @@
+{
+  "audit": {
+    "failures": [],
+    "gates": {
+      "author_disjoint_train_test": true,
+      "author_disjoint_train_val": true,
+      "author_disjoint_val_test": true,
+      "pass": true,
+      "source_dataset_present": true,
+      "test_essay_authors_gte_2": true,
+      "test_essay_gte_50": true,
+      "test_poetry_authors_gte_2": true,
+      "test_poetry_gte_50": true,
+      "test_screenplay_authors_gte_2": true,
+      "test_screenplay_gte_50": true,
+      "test_speech_authors_gte_2": true,
+      "test_speech_gte_50": true,
+      "train_essay_gte_80": true,
+      "train_poetry_gte_1500": true,
+      "train_screenplay_gte_1500": true,
+      "train_speech_gte_1200": true,
+      "val_essay_authors_gte_2": true,
+      "val_essay_gte_50": true,
+      "val_poetry_authors_gte_2": true,
+      "val_poetry_gte_50": true,
+      "val_screenplay_authors_gte_2": true,
+      "val_screenplay_gte_50": true,
+      "val_speech_authors_gte_2": true,
+      "val_speech_gte_50": true
+    }
+  },
+  "balanced_probes": {
+    "authors_by_register": {
+      "essay": 4,
+      "poetry": 4,
+      "screenplay": 4,
+      "speech": 4
+    },
+    "by_register": {
+      "essay": 5,
+      "poetry": 5,
+      "screenplay": 5,
+      "speech": 5
+    },
+    "rows": 20,
+    "sources_by_register": {
+      "essay": {
+        "unknown": 5
+      },
+      "poetry": {
+        "unknown": 5
+      },
+      "screenplay": {
+        "unknown": 5
+      },
+      "speech": {
+        "unknown": 5
+      }
+    }
+  },
+  "caps": {
+    "essay": 100,
+    "poetry": 100,
+    "screenplay": 30,
+    "speech": 50
+  },
+  "clean_boilerplate": true,
+  "corpus_version": "v3.1",
+  "filter_report": {
+    "input_pairs": 11350,
+    "kept_pairs": 10683,
+    "removed_by_reason": {
+      "regex:\\bTo the (Senate|House of Representatives)\\b": 509,
+      "regex:^\\s*chapter\\s+[ivxlcdm0-9]+\\.?\\s*$": 58,
+      "regex:^\\s*contents\\b": 27,
+      "regex:^\\s*index\\b": 5,
+      "repeated_5gram": 78
+    },
+    "removed_by_register": {
+      "essay": 44,
+      "poetry": 103,
+      "screenplay": 7,
+      "speech": 513
+    },
+    "removed_pairs": 667
+  },
+  "filter_suspicious_targets": true,
+  "instruction_mode": "content_style_no_theme",
+  "pairs": {
+    "authors_by_register": {
+      "essay": 6,
+      "poetry": 35,
+      "screenplay": 197,
+      "speech": 42
+    },
+    "by_register": {
+      "essay": 300,
+      "poetry": 3041,
+      "screenplay": 5821,
+      "speech": 1521
+    },
+    "rows": 10683,
+    "sources_by_register": {
+      "essay": {
+        "project_gutenberg": 300
+      },
+      "poetry": {
+        "project_gutenberg": 3041
+      },
+      "screenplay": {
+        "imsdb": 5821
+      },
+      "speech": {
+        "miller_center": 1521
+      }
+    }
+  },
+  "records": {
+    "authors_by_register": {
+      "essay": 7,
+      "poetry": 35,
+      "screenplay": 197,
+      "speech": 42
+    },
+    "by_register": {
+      "essay": 80,
+      "poetry": 5037,
+      "screenplay": 16249,
+      "speech": 998
+    },
+    "rows": 22364,
+    "sources_by_register": {
+      "essay": {
+        "project_gutenberg": 80
+      },
+      "poetry": {
+        "project_gutenberg": 5037
+      },
+      "screenplay": {
+        "imsdb": 16249
+      },
+      "speech": {
+        "miller_center": 998
+      }
+    }
+  },
+  "registers": [
+    "poetry",
+    "essay",
+    "screenplay",
+    "speech"
+  ],
+  "splits": {
+    "test": {
+      "authors_by_register": {
+        "essay": 2,
+        "poetry": 2,
+        "screenplay": 2,
+        "speech": 2
+      },
+      "by_register": {
+        "essay": 71,
+        "poetry": 65,
+        "screenplay": 50,
+        "speech": 50
+      },
+      "rows": 236,
+      "sources_by_register": {
+        "essay": {
+          "project_gutenberg": 71
+        },
+        "poetry": {
+          "project_gutenberg": 65
+        },
+        "screenplay": {
+          "imsdb": 50
+        },
+        "speech": {
+          "miller_center": 50
+        }
+      }
+    },
+    "train": {
+      "authors_by_register": {
+        "essay": 2,
+        "poetry": 31,
+        "screenplay": 193,
+        "speech": 38
+      },
+      "by_register": {
+        "essay": 120,
+        "poetry": 2900,
+        "screenplay": 5714,
+        "speech": 1421
+      },
+      "rows": 10155,
+      "sources_by_register": {
+        "essay": {
+          "project_gutenberg": 120
+        },
+        "poetry": {
+          "project_gutenberg": 2900
+        },
+        "screenplay": {
+          "imsdb": 5714
+        },
+        "speech": {
+          "miller_center": 1421
+        }
+      }
+    },
+    "val": {
+      "authors_by_register": {
+        "essay": 2,
+        "poetry": 2,
+        "screenplay": 2,
+        "speech": 2
+      },
+      "by_register": {
+        "essay": 109,
+        "poetry": 76,
+        "screenplay": 57,
+        "speech": 50
+      },
+      "rows": 292,
+      "sources_by_register": {
+        "essay": {
+          "project_gutenberg": 109
+        },
+        "poetry": {
+          "project_gutenberg": 76
+        },
+        "screenplay": {
+          "imsdb": 57
+        },
+        "speech": {
+          "miller_center": 50
+        }
+      }
+    }
+  }
+}

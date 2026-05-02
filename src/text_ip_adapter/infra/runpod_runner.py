@@ -4,6 +4,7 @@ import asyncio
 import json
 import os
 import shlex
+import tempfile
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -13,8 +14,49 @@ from text_ip_adapter.config import load_experiment_config
 from text_ip_adapter.infra.ssh_sync import sync_dataset, sync_project_root
 
 
+def _configured_dataset_dirs(repo_path: Path, experiment) -> list[Path]:
+    dirs: list[Path] = []
+    for raw_path in (
+        experiment.data.train_path,
+        experiment.data.val_path,
+        experiment.data.test_path,
+        experiment.training.probe_path,
+    ):
+        if not raw_path:
+            continue
+        path = (repo_path / raw_path).parent.resolve()
+        if path not in dirs:
+            dirs.append(path)
+    return dirs
+
+
 def _default_env_file(repo_root: Path) -> Path:
     return repo_root.parent / "runpod-lifecycle" / ".env"
+
+
+async def _sync_hf_token(pod) -> bool:
+    token_path = Path.home() / ".cache" / "huggingface" / "token"
+    token_text = os.getenv("HF_TOKEN") or os.getenv("HUGGINGFACE_HUB_TOKEN")
+    if not token_path.exists() and not token_text:
+        return False
+    await pod.exec_ssh("mkdir -p ~/.cache/huggingface", timeout=30)
+    ssh = await asyncio.to_thread(pod.open_ssh_client)
+    try:
+        sftp = ssh.open_sftp()
+        try:
+            if token_path.exists():
+                sftp.put(str(token_path), "/root/.cache/huggingface/token")
+            else:
+                with tempfile.NamedTemporaryFile("w", encoding="utf-8") as handle:
+                    handle.write(token_text.strip())
+                    handle.flush()
+                    sftp.put(handle.name, "/root/.cache/huggingface/token")
+        finally:
+            sftp.close()
+    finally:
+        ssh.close()
+    await pod.exec_ssh("chmod 600 ~/.cache/huggingface/token", timeout=30)
+    return True
 
 
 def load_runpod_config(repo_root: Path, storage_name: str | None = None) -> RunPodConfig:
@@ -52,13 +94,16 @@ async def launch_training_run(
 
     pod = await launch(runpod_config, name="text-ip-adapter-train")
     await pod.wait_ready(timeout=900)
+    hf_token_synced = await _sync_hf_token(pod)
 
     await sync_project_root(pod, repo_root=str(repo_path), remote_root=experiment.runpod.remote_root)
-    await sync_dataset(
-        pod,
-        local_dir=str(repo_path / "data" / "pairs"),
-        remote_dir=f"{experiment.runpod.remote_root}/data/pairs",
-    )
+    for local_dataset_dir in _configured_dataset_dirs(repo_path, experiment):
+        rel_dir = local_dataset_dir.relative_to(repo_path)
+        await sync_dataset(
+            pod,
+            local_dir=str(local_dataset_dir),
+            remote_dir=f"{experiment.runpod.remote_root}/{rel_dir.as_posix()}",
+        )
 
     remote_root = experiment.runpod.remote_root
     install_cmd = f"cd {shlex.quote(remote_root)} && PYTHONPATH=src python -m pip install -e ."
@@ -87,6 +132,7 @@ async def launch_training_run(
             "pid": int(stdout.strip().splitlines()[-1]),
             "storage": storage_info,
             "remote_root": remote_root,
+            "hf_token_synced": hf_token_synced,
         }
 
     exit_code, stdout, stderr = await pod.exec_ssh(train_cmd, timeout=7200)
@@ -97,4 +143,5 @@ async def launch_training_run(
         "stderr": stderr,
         "storage": storage_info,
         "remote_root": remote_root,
+        "hf_token_synced": hf_token_synced,
     }

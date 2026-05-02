@@ -1,0 +1,60 @@
+{
+  "description": "poetry-only slice of v4.1 generic-probe style-clean data",
+  "output": "data/pairs_v4_2_poetry_styleclean",
+  "probes_balanced.jsonl": {
+    "rows": 16,
+    "sha256": "a636333fbae1c87dc55d9db8327fcd3f960e8ee833ada342e8e0d23302b98823"
+  },
+  "probes_balanced_n16.jsonl": {
+    "rows": 16,
+    "sha256": "a636333fbae1c87dc55d9db8327fcd3f960e8ee833ada342e8e0d23302b98823"
+  },
+  "source": "data/pairs_v4_1_core2_styleclean_genericprobes",
+  "splits": {
+    "test": {
+      "authors": {
+        "christina_rossetti": 100,
+        "emily_dickinson": 86,
+        "sara_teasdale": 88,
+        "stephen_crane": 85
+      },
+      "rows": 359,
+      "sha256": "b40fc0bf96731fe558a3e50befcce668b1e44b2f75860c621c8615e92c84266b"
+    },
+    "train": {
+      "authors": {
+        "algernon_swinburne": 97,
+        "amy_lowell": 99,
+        "dante_rossetti": 100,
+        "edgar_allan_poe": 83,
+        "elizabeth_browning": 100,
+        "gerard_manley_hopkins": 94,
+        "henry_longfellow": 100,
+        "john_keats": 100,
+        "oscar_wilde": 97,
+        "robert_frost": 100,
+        "rudyard_kipling": 59,
+        "rupert_brooke": 99,
+        "t_s_eliot": 94,
+        "thomas_hardy": 92,
+        "walt_whitman": 97,
+        "wilfred_owen": 94,
+        "william_blake": 100,
+        "william_butler_yeats": 95,
+        "william_wordsworth": 95
+      },
+      "rows": 1795,
+      "sha256": "6f2a0b83bb46e5a1279f2092a71b07fef4004220ae28456df34a4293e0471152"
+    },
+    "val": {
+      "authors": {
+        "edna_millay": 95,
+        "edwin_arlington_robinson": 99,
+        "john_masefield": 96,
+        "matthew_arnold": 97
+      },
+      "rows": 387,
+      "sha256": "b89a4f1783df6b30f4568287f81cdb727e8215e9ffb74a0754586bf75d851719"
+    }
+  }
+}

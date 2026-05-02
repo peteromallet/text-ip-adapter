@@ -1,0 +1,54 @@
+# Experiment 031 candidate: v5.7 audited data with longer effective training.
+#
+# Exp030 reached the best pathway metrics so far, but the cosine LR schedule
+# had decayed to near-zero by the last quarter of the run. This keeps the data
+# and objective fixed while adding a 10% LR floor over a 2400-step run.
+model:
+  base_model_id: google/gemma-3-4b-pt
+  torch_dtype: bfloat16
+
+adapter:
+  num_prefix_tokens: 16
+  num_queries: 16
+  encoder:
+    num_queries: 16
+    perceiver_layers: 2
+    perceiver_heads: 8
+  projector:
+    hidden_mult: 2
+    use_trunk: false
+  injection:
+    inject_layers_start: 17
+    inject_layers_end: 32
+
+data:
+  train_path: data/pairs_v5_7_poetry_pair_audited_min25/train.jsonl
+  val_path: data/pairs_v5_7_poetry_pair_audited_min25/val.jsonl
+  test_path: data/pairs_v5_7_poetry_pair_audited_min25/test.jsonl
+  reference_max: 512
+  instruction_max: 64
+  target_max: 512
+
+training:
+  output_dir: /tmp/stage1_v5_8_poetry_pair_audited_min25_stronger_style_lrfloor_restart006
+  batch_size: 2
+  max_steps: 2400
+  lr_projector: 1.0e-5
+  lr_encoder: 5.0e-6
+  warmup: 50
+  min_lr_ratio: 0.10
+  save_every: 800
+  log_every: 25
+  mixed_precision: bf16
+  sample_every: 0
+  sample_max_new_tokens: 120
+  probe_path: data/pairs_v5_7_poetry_pair_audited_min25/probes_balanced_n24.jsonl
+  contrastive_weight: 0.2
+  contrastive_clamp: true
+  style_triplet_weight: 1.5
+  style_triplet_margin: 0.35
+  init_from: checkpoints/stage1_gemma_no_trunk/final.pt
+
+runpod:
+  storage_name: Peter
+  remote_root: /workspace/text-ip-adapter

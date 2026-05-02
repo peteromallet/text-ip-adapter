@@ -1,0 +1,47 @@
+{
+  "authors": {
+    "algernon_swinburne": 42,
+    "amy_lowell": 41,
+    "christina_rossetti": 31,
+    "dante_rossetti": 41,
+    "edgar_allan_poe": 41,
+    "edna_millay": 60,
+    "edwin_arlington_robinson": 47,
+    "elizabeth_browning": 44,
+    "emily_dickinson": 31,
+    "gerard_manley_hopkins": 41,
+    "henry_longfellow": 41,
+    "john_keats": 25,
+    "john_masefield": 47,
+    "matthew_arnold": 31,
+    "oscar_wilde": 61,
+    "robert_frost": 37,
+    "rudyard_kipling": 22,
+    "rupert_brooke": 41,
+    "sara_teasdale": 32,
+    "stephen_crane": 44,
+    "t_s_eliot": 16,
+    "thomas_hardy": 40,
+    "walt_whitman": 41,
+    "wilfred_owen": 31,
+    "william_blake": 41,
+    "william_butler_yeats": 41,
+    "william_wordsworth": 49
+  },
+  "cleaning_version": "seed_from_pairs_v1",
+  "corpus_rows": 1059,
+  "description": "Seed corpus extracted from v4.5 cleaned/balanced pair rows. Use for bootstrapping audits only.",
+  "input_pair_rows": {
+    "test": 134,
+    "train": 727,
+    "val": 183
+  },
+  "limitations": [
+    "not source-native",
+    "titles often unavailable",
+    "source_url is pair-dataset pseudo-provenance",
+    "should be replaced by poetry_corpus_v0 from raw source manifests"
+  ],
+  "output": "data/poetry_corpus_v0_seed_from_v45",
+  "source_pairs_dir": "data/pairs_v4_5_poetry_structural_balanced"
+}
